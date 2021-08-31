@@ -31,6 +31,8 @@ const Login = ({loginToParent}) => {
       });
   }
 
+  
+
   return (
     <View style={styles.container}>
         <View style={styles.svg}>

@@ -1,16 +1,32 @@
-import { StatusBar } from 'expo-status-bar';
-import React, {useState} from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import styles from '../Styles/LoginStyles'
+import React, {useState, useEffect} from 'react';
+import { StyleSheet, Text, View, FlatList} from 'react-native';
+import styles from '../Styles/FeedStyles'
+import axios from 'axios';
+
 
 
 
 
 const Feed = () => {
+  const [allRooms, setAllRooms] = useState([]) //Stores all current rooms from api
+
+
+  useEffect(()=>{ //On page load grab all the rooms
+    let isMounted = true;
+
+    
+    return () => { isMounted = false };
+  },[])
+
+
   return(
-      <View style={styles.container}>
-          <Text style={styles.text}>Feed Page</Text>
-      </View>
+      <FlatList
+        data={allRooms}
+        // ListHeaderComponent={this.renderListHeader}
+        renderItem={({item})=> (
+          <Text>Room</Text>
+        )}
+      />
   )
 }
 

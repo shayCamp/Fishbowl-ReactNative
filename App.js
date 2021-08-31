@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { StyleSheet, Text, View,Image } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -9,6 +9,8 @@ import Feed from './Routes/Feed.js';
 import Search from './Routes/Search.js';
 import Profile from './Routes/Profile.js';
 import CreateRoom from './Routes/CreateRoom.js';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 
 const Stack = createNativeStackNavigator();
@@ -21,6 +23,12 @@ const App = () => {
     setUserInfo(data)
   }
 
+  useEffect(()=>{
+    let isMounted = true;
+    
+    return () => { isMounted = false };
+  },[userInfo])
+
   const LoginPage = props =>(
     <Login {...props} loginToParent={loginToParent}/>
   )
@@ -29,7 +37,16 @@ const App = () => {
     return(
       <NavigationContainer>
         <StatusBar barStyle = "dark-content" hidden = {false} backgroundColor = "#121212" translucent = {true}/>
-        <Tab.Navigator screenOptions={{ headerShown: false }} tabBarOptions={{showLabel: false}}>
+        <Tab.Navigator screenOptions={{
+          "headerShown":false,
+          "tabBarShowLabel": false,
+          "tabBarStyle": [
+            {
+              "display": "flex"
+            },
+            null
+          ]
+        }}>
           <Tab.Screen name="Feed" component={Feed} options={{
             tabBarIcon: ({focused}) => (
               <View style={{alignItems: 'center', justifyContent: 'center'}}>

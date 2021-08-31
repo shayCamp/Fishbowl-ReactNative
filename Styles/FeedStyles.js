@@ -3,6 +3,8 @@ import {StyleSheet} from 'react-native'
 export default StyleSheet.create({
     container: {
         flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
         backgroundColor: '#121212'
     },
 
@@ -10,6 +12,4 @@ export default StyleSheet.create({
         color: 'white',
         fontSize: 22
     }
-
-
 })
