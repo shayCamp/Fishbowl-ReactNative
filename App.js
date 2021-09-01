@@ -18,6 +18,7 @@ const Tab = createBottomTabNavigator();
 
 const App = () => {
   const [userInfo, setUserInfo] = useState()
+  console.log('userInfo: ', userInfo);
 
   const loginToParent = (data) =>{
     setUserInfo(data)
@@ -25,6 +26,18 @@ const App = () => {
 
   useEffect(()=>{
     let isMounted = true;
+    
+
+    if(isMounted){
+      const storeData = async () => {
+        try {
+          await AsyncStorage.setItem('session-key', userInfo.idToken)
+        } catch (e) {
+        }
+      }
+      storeData()
+    }
+
     
     return () => { isMounted = false };
   },[userInfo])
