@@ -1,15 +1,17 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, Text, View, FlatList, Image, RefreshControl} from 'react-native';
+import { StyleSheet, Text, View, FlatList, Image, RefreshControl, Pressable} from 'react-native';
 import styles from '../Styles/FeedStyles'
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+// import { useNavigation } from '@react-navigation/native';
 
 
 
 
 
 
-const Feed = () => {
+const Feed = ({navigation}) => {
+  // const navigation = useNavigation();
   const [allRooms, setAllRooms] = useState([]) //Stores all current rooms from api
   const [token, setToken] = useState() //Stores all current rooms from api
   const [refreshing, setRefreshing] = useState(false);
@@ -71,8 +73,6 @@ const Feed = () => {
     })
   }
 
-
-
   return(
     <View style={styles.container}>
       <FlatList
@@ -86,7 +86,7 @@ const Feed = () => {
           />
         }
         renderItem={({item})=> (
-          <View style={styles.room}>
+          <Pressable style={styles.room} onPress={()=> navigation.navigate('ChatRoom', {room: item})}>
             <View style={styles.userInfo}>
               <Image style={styles.image} source={{uri: item.CreatedByImage}}/>
               <Text style={styles.username}>{item.CreatedByName}</Text>
@@ -111,7 +111,7 @@ const Feed = () => {
                 </View>
               </View>
             ):null}
-          </View>
+          </Pressable>
         )}
       />
     </View>

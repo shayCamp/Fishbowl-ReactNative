@@ -10,11 +10,32 @@ import Search from './Routes/Search.js';
 import Profile from './Routes/Profile.js';
 import CreateRoom from './Routes/CreateRoom.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ChatRoom from './Routes/ChatRoom.js';
 
 
 
-const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
+
+const FeedStack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator();
+
+function FeedStackScreen() {
+    return (
+      <FeedStack.Navigator screenOptions={{
+        "headerShown":false,
+        "tabBarShowLabel": false,
+        "tabBarStyle": [
+          {
+            "display": "flex"
+          },
+          null
+        ]
+      }}>
+        <FeedStack.Screen name="Feed" component={Feed} />
+        <FeedStack.Screen name="ChatRoom" component={ChatRoom} />
+      </FeedStack.Navigator>
+    );
+}
 
 const App = () => {
   const [userInfo, setUserInfo] = useState()
@@ -60,7 +81,7 @@ const App = () => {
             null
           ]
         }}>
-          <Tab.Screen name="Feed" component={Feed} options={{
+          <Tab.Screen name="Feed" component={FeedStackScreen} options={{
             tabBarIcon: ({focused}) => (
               <View style={{alignItems: 'center', justifyContent: 'center'}}>
                 <Image
