@@ -42,7 +42,7 @@ export default StyleSheet.create({
     },
 
     userInfo:{
-        height: 55,
+        height: 60,
         width: '100%',
         flexDirection: 'row',
         alignItems: 'center'
@@ -60,6 +60,10 @@ export default StyleSheet.create({
         borderRadius: 20,
         marginLeft: 15,
         marginRight: 15
+    },
+
+    tagHolder:{
+
     },
 
     roomInfo:{
@@ -86,8 +90,49 @@ export default StyleSheet.create({
         color: 'white'
     },
 
+    tagHolder: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        paddingBottom: 20
+    },
+
+    tag:{
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 30,
+        width: 110,
+        marginLeft: 15,
+        borderRadius: 15,
+        backgroundColor: '#384357',
+    },
+
+    answeredHolder:{
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        paddingBottom: 10
+    },
+
+    block:{
+        height: 30,
+        marginRight: 20,
+        width: 100,
+        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#0096ff'
+    },
+
     text:{
         color: 'white',
         fontSize: 22
+    },
+    answeredText:{
+        color: 'white',
+        fontSize: 16
+    },
+
+    tagName:{
+        color: 'white',
+        fontSize: 15
     }
 })
