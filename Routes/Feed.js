@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, Text, View, FlatList, Image, RefreshControl, Pressable} from 'react-native';
+import { StyleSheet, Text, View, FlatList, Image, RefreshControl, Pressable, StatusBar} from 'react-native';
 import styles from '../Styles/FeedStyles'
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -19,7 +19,6 @@ const Feed = ({navigation}) => {
 
   useEffect(()=>{ //On page load grab all the rooms
     let isMounted = true;
-    if(isMounted){
       const getData = async () => {
         try {
           const token = await AsyncStorage.getItem('session-key')
@@ -39,8 +38,10 @@ const Feed = ({navigation}) => {
           // error reading value
         }
       }
-      getData()
-    }
+      if(isMounted){
+        getData()
+      }
+
     return () => { isMounted = false };
   },[])
 
@@ -75,13 +76,19 @@ const Feed = ({navigation}) => {
 
   return(
     <View style={styles.container}>
+      <StatusBar barStyle="dark-content" backgroundColor="#111213ff" />
       <FlatList
         data={allRooms}
         ListHeaderComponent={header}
         ListFooterComponent={footer}
+        keyExtractor={(item, index) => {
+          return  index.toString();
+         }}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
+            // progressViewOffset={150
+            // }
             onRefresh={onRefresh}
           />
         }
@@ -97,8 +104,8 @@ const Feed = ({navigation}) => {
             </View>
             {item.Tags.length !== 0?(
               <View style={styles.tagHolder}>
-                {item.Tags.slice(0,3).map((tag)=>(
-                  <View style={styles.tag}>
+                {item.Tags.slice(0,3).map((tag, i)=>(
+                  <View key={i} style={styles.tag}>
                     <Text style={styles.tagName}>{tag}</Text>
                   </View>
                 ))}

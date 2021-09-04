@@ -20,7 +20,6 @@ const Login = ({loginToParent}) => {
 
     Google.logInAsync(config)
       .then((result) => {
-        console.log('result: ', result);
         loginToParent(result)
        
         setGoogleSubmitting(false);

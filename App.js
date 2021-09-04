@@ -15,62 +15,12 @@ import ChatRoom from './Routes/ChatRoom.js';
 
 
 const Tab = createBottomTabNavigator();
-
-const FeedStack = createNativeStackNavigator();
+const MainApp = createNativeStackNavigator();
 const Stack = createNativeStackNavigator();
 
-function FeedStackScreen() {
+function TabNavigator() {
     return (
-      <FeedStack.Navigator screenOptions={{
-        "headerShown":false,
-        "tabBarShowLabel": false,
-        "tabBarStyle": [
-          {
-            "display": "flex"
-          },
-          null
-        ]
-      }}>
-        <FeedStack.Screen name="Feed" component={Feed} />
-        <FeedStack.Screen name="ChatRoom" component={ChatRoom} />
-      </FeedStack.Navigator>
-    );
-}
-
-const App = () => {
-  const [userInfo, setUserInfo] = useState()
-  console.log('userInfo: ', userInfo);
-
-  const loginToParent = (data) =>{
-    setUserInfo(data)
-  }
-
-  useEffect(()=>{
-    let isMounted = true;
-    
-
-    if(isMounted){
-      const storeData = async () => {
-        try {
-          await AsyncStorage.setItem('session-key', userInfo.idToken)
-        } catch (e) {
-        }
-      }
-      storeData()
-    }
-
-    
-    return () => { isMounted = false };
-  },[userInfo])
-
-  const LoginPage = props =>(
-    <Login {...props} loginToParent={loginToParent}/>
-  )
-  
-  if(userInfo !== undefined){ //f we dont have user info return login
-    return(
-      <NavigationContainer>
-        <StatusBar barStyle = "dark-content" hidden = {false} backgroundColor = "#121212" translucent = {true}/>
+      <>
         <Tab.Navigator screenOptions={{
           "headerShown":false,
           "tabBarShowLabel": false,
@@ -81,7 +31,7 @@ const App = () => {
             null
           ]
         }}>
-          <Tab.Screen name="Feed" component={FeedStackScreen} options={{
+          <Tab.Screen name="FeedNavigator" component={Feed} options={{
             tabBarIcon: ({focused}) => (
               <View style={{alignItems: 'center', justifyContent: 'center'}}>
                 <Image
@@ -143,7 +93,57 @@ const App = () => {
           }} />
           
         </Tab.Navigator>
-    </NavigationContainer>
+      </>
+    );
+}
+
+const App = () => {
+  const [userInfo, setUserInfo] = useState()
+  console.log('userInfo: ', userInfo);
+
+  const loginToParent = (data) =>{
+    setUserInfo(data)
+  }
+
+  useEffect(()=>{
+    let isMounted = true;
+    
+
+    if(isMounted){
+      const storeData = async () => {
+        try {
+          await AsyncStorage.setItem('session-key', userInfo.idToken)
+        } catch (e) {
+        }
+      }
+      storeData()
+    }
+
+    
+    return () => { isMounted = false };
+  },[userInfo])
+
+  const LoginPage = props =>(
+    <Login {...props} loginToParent={loginToParent}/>
+  )
+  
+  if(userInfo !== undefined){ //f we dont have user info return login
+    return(
+      <NavigationContainer>
+        <MainApp.Navigator screenOptions={{
+          "headerShown":false,
+          "tabBarShowLabel": false,
+          "tabBarStyle": [
+            {
+              "display": "flex"
+            },
+            null
+          ]
+        }}>
+          <MainApp.Screen name="Feed" component={TabNavigator} />
+          <MainApp.Screen name="ChatRoom" component={ChatRoom} />
+        </MainApp.Navigator>
+      </NavigationContainer>
     )
   }else{
     return (
