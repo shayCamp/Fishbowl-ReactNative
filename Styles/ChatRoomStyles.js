@@ -82,6 +82,12 @@ input:{
     width: '55%',
     color: 'white',
     fontSize: 18
+},
+
+replyHolder:{
+    height: 60,
+    width: '100%',
+    backgroundColor: 'yellow'
 }
 
 });

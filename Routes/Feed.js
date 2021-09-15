@@ -10,7 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
-const Feed = ({navigation}) => {
+const Feed = ({route,navigation}) => {
   // const navigation = useNavigation();
   const [allRooms, setAllRooms] = useState([]) //Stores all current rooms from api
   const [token, setToken] = useState() //Stores all current rooms from api
