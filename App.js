@@ -122,7 +122,7 @@ const App = () => {
     <Login {...props} loginToParent={loginToParent}/>
   )
   
-  if(userInfo !== undefined){ //f we dont have user info return login
+  if(userInfo !== undefined && username !== undefined){ //f we dont have user info return login
     return(
       <NavigationContainer theme={DarkTheme}>
         <UserContext.Provider value={{ name: username, email: userInfo.user.email, image: userInfo.user.photoUrl, id: userInfo.user.id }}>

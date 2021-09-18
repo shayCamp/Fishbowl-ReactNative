@@ -1,5 +1,5 @@
-import React, {useState, useEffect, useContext} from 'react';
-import { StyleSheet, Text, View, FlatList, Image, RefreshControl, Pressable, StatusBar} from 'react-native';
+import React, {useState, useEffect, useContext, useRef} from 'react';
+import { StyleSheet, Text, View, FlatList, Image, RefreshControl, Pressable, StatusBar, ScrollView} from 'react-native';
 import styles from '../Styles/FeedStyles'
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -20,9 +20,10 @@ const Feed = ({route,navigation}) => {
 
   // const navigation = useNavigation();
   const [allRooms, setAllRooms] = useState([]) //Stores all current rooms from api
-  const [token, setToken] = useState() //Stores all current rooms from api
   const [refreshing, setRefreshing] = useState(false);
   const [following, setFollowing] = useState([]) //Array of the users the current user is following
+  const [users,setUsers] = useState([])
+  const [token,setToken] = useState()
   const isFocused = useIsFocused();
 
 
@@ -33,8 +34,8 @@ const Feed = ({route,navigation}) => {
       const getData = async () => {
         try {
           const token = await AsyncStorage.getItem('session-key')
+          setToken(token)
           if(token !== null) {
-            setToken(token)
             axios({
               method: 'GET',
               url: `https://fishbowl-heroku.herokuapp.com/chat/get`,
@@ -42,16 +43,31 @@ const Feed = ({route,navigation}) => {
             }).then((res) => {
                   setAllRooms(res.data.reverse()) //Reversing order of rooms before we set variable, so that newest is at the top
             })
-          //   axios({
-          //     method: "GET", //Getting the users the current user follows
-          //     url: `https://fishbowl-heroku.herokuapp.com/users/get/${info.name}`,
-          //     headers: { "x-auth-token": `${token}` }
-          // }).then((response) => {
-          //         // setFollowing(response.data.following)
-          // }).catch((error) => {
-          //     console.log('error: ', error);
-  
-          // })
+
+            axios({
+              method: "GET", //Getting the users the current user follows
+              url: `https://fishbowl-heroku.herokuapp.com/users/get/${info.name}`,
+              headers: { "x-auth-token": `${token}` }
+            }).then((response) => {
+              setFollowing(response.data[0].following);
+            }).catch((error) => {
+                console.log('error: ', error);
+    
+            })
+
+            axios({ //Getting all users on the site
+              method: "GET",
+              url: `https://fishbowl-heroku.herokuapp.com/users/get`,
+              headers: { "x-auth-token": `${token}` }
+            }).then((response) => {
+                setUsers(response.data.reverse()) //Setting state with current info
+            }).catch((error) => {
+                console.log('error: ', error);
+    
+            })
+
+
+            
           }
         } catch(e) {
           // error reading value
@@ -61,12 +77,21 @@ const Feed = ({route,navigation}) => {
     }
       
     return () => { isMounted = false };
-  },[])
+  },[isFocused])
 
   const header = () =>{
     return(
       <View style={styles.header}>
-        <View style={styles.friendsBar}></View>
+        <ScrollView contentContainerStyle={styles.friendsBar} ref={(ref)=>{
+          setRef(ref)
+        }}>
+          {users.length !== 0?users.filter((user)=> following.includes(user.username)).map((user)=>(
+            <Pressable style={styles.friendProfileHolder}>
+              <Image style={styles.profileImage} source={{uri: user.image}}/>
+              <Text style={styles.profileText}>{user.username.substring(0,10)}</Text>
+            </Pressable>
+          )): null}
+        </ScrollView>
         <View style={styles.filter}></View>
       </View>
     )
@@ -75,7 +100,7 @@ const Feed = ({route,navigation}) => {
   const footer = () =>{
     return(
       <View style={styles.footer}>
-        <Text style={styles.noRooms}>No More Rooms</Text>
+        <Text style={styles.noRooms}>Follow More People For More Content</Text>
       </View>
     )
   }
@@ -96,7 +121,7 @@ const Feed = ({route,navigation}) => {
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#111213ff" />
       <FlatList
-        data={allRooms}
+        data={allRooms.filter((room)=> following.includes(room.CreatedByName) || room.CreatedByName === info.name)}
         ListHeaderComponent={header}
         ListFooterComponent={footer}
         keyExtractor={(item, index) => {

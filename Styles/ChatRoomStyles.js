@@ -85,6 +85,8 @@ text:{
 },
 
 
+
+
 input:{
     height: '100%',
     width: '60%',
@@ -93,6 +95,8 @@ input:{
     fontSize: 18,
     // backgroundColor: 'red'
 },
+
+
 
 replyHolder:{
     minHeight: 80,

@@ -115,8 +115,9 @@ const ChatRoom = ({route, navigation}) =>{
      * ===================================
      */
 
-     const handleSendMessage = (props) => { //Function checks what user says
 
+
+     const handleSendMessage = (props) => { //Function checks what user says
 
 
         if(Array.isArray(props)){ //If the message is either delete or helped then they have a seperate meaning
@@ -163,6 +164,8 @@ const ChatRoom = ({route, navigation}) =>{
      * ===================================
      */
 
+    
+
     return(
         <View style={styles.container}>
             <StatusBar barStyle="dark-content" backgroundColor="#212224ff" />
@@ -186,7 +189,7 @@ const ChatRoom = ({route, navigation}) =>{
                 </View>
             </View>
             
-            <ScrollView style={styles.ScrollView}>
+            <ScrollView style={styles.ScrollView} >
                 <View style={styles.lower}>
                     <Text style={styles.Qtext}>{room.Question}</Text>
                 </View>
@@ -228,7 +231,7 @@ const ChatRoom = ({route, navigation}) =>{
                 <Image style={styles.imageChatbar} source={{uri: info.image}}/>
                 <TextInput style={styles.input} selectionColor={'white'} placeholder={'Message'} value={newMessage} placeholderTextColor="white" onChangeText={message => setNewMessage(message)}/>
                 {newMessage.length !== 0? (
-                    <Pressable onPress={handleSendMessage}>
+                    <Pressable onPress={()=>handleSendMessage}>
                     <Image
                     source={require('../SVG/sendF.png')}
                     resizeMode='contain'

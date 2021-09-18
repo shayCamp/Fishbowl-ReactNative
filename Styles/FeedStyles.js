@@ -8,16 +8,17 @@ export default StyleSheet.create({
     },
 
     header:{
-        height: 190,
         width: '100%',
     },
 
 
     friendsBar:{
-        height: 150,
+        height: 120,
         width: '100%',
         borderBottomWidth: 1,
-        borderColor: 'rgba(255,255,255, 0.4)'
+        borderColor: 'rgba(255,255,255, 0.4)',
+        flexDirection: 'row',
+        alignItems: 'center'
     },
 
     filter:{
@@ -54,6 +55,12 @@ export default StyleSheet.create({
         fontWeight: 'bold'
     },
 
+    profileImage:{
+        height: 65,
+        width: 65,
+        borderRadius: 40,
+    },
+
     image:{
         height: 35,
         width: 35,
@@ -62,8 +69,19 @@ export default StyleSheet.create({
         marginRight: 15
     },
 
-    tagHolder:{
+    friendProfileHolder:{
+        // backgroundColor: 'orange',
+        height: '75%',
+        marginLeft: 15,
+        marginRight: 15,
+        alignItems: 'center',
+        justifyContent: 'space-between'
+    },
 
+    profileText:{
+        fontSize: 13,
+        opacity: 0.9,
+        color: 'white'
     },
 
     roomInfo:{
