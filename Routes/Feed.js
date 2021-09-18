@@ -93,7 +93,7 @@ const Feed = ({route,navigation}) => {
           />
         }
         renderItem={({item})=> (
-          <Pressable style={styles.room} onPress={()=> navigation.navigate('ChatRoom', {room: item})}>
+          <Pressable style={styles.room} onPress={()=> navigation.navigate('ChatRoom', {roomID: item._id})}>
             <View style={styles.userInfo}>
               <Image style={styles.image} source={{uri: item.CreatedByImage}}/>
               <Text style={styles.username}>{item.CreatedByName}</Text>

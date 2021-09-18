@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native'
+import {ScrollView, StyleSheet} from 'react-native'
 
 export default StyleSheet.create({
 
@@ -68,6 +68,15 @@ image:{
     marginRight: 20
 },
 
+imageChatbar:{
+    height: 40,
+    width: 40,
+    marginLeft: 20,
+    marginRight: 25,
+    backgroundColor: 'red',
+    borderRadius: 20,
+},
+
 text:{
     color: 'white',
     fontSize: 18,
@@ -75,19 +84,86 @@ text:{
     maxWidth: '65%'
 },
 
+
 input:{
-    marginLeft: 60,
-    marginRight: 50,
     height: '100%',
-    width: '55%',
+    width: '60%',
+    marginRight: 20,
     color: 'white',
-    fontSize: 18
+    fontSize: 18,
+    // backgroundColor: 'red'
 },
 
 replyHolder:{
-    height: 60,
+    minHeight: 80,
     width: '100%',
-    backgroundColor: 'yellow'
+    marginTop: 6
+    // backgroundColor: 'grey',
+    // alignItems: 'center'
+},
+
+top:{
+    height: 55,
+    width: '100%',
+    // backgroundColor: 'yellow',
+    flexDirection: 'row',
+    alignItems: 'center',
+},
+
+userToClick:{
+    height: '100%',
+    // backgroundColor: 'red',
+    minWidth: '60%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: 15,
+    // justifyContent: 'space-between'
+},
+
+middle:{
+    minHeight: 50,
+    // alignItems: 'center',
+    // backgroundColor: 'red',
+    paddingLeft: 20,
+    paddingRight: 15,
+    paddingTop: 15,
+    paddingBottom: 15,
+    // width: '95%',
+    justifyContent: 'center'
+},
+
+replyText:{
+    color: 'white',
+    fontSize: 18,
+    // backgroundColor: 'red',
+},
+
+userImage:{
+    height: 45,
+    width: 45,
+    borderRadius: 45/2,
+    marginRight: 20
+},
+
+textProfile:{
+    color: 'white',
+    fontSize: 18,
+    marginRight: 15
+    // backgroundColor: 'red',
+},
+
+textDate:{
+    color: 'white',
+    fontSize: 16,
+    // backgroundColor: 'red',
+},
+
+
+
+ScrollView:{
+    // marginTop: 20,
+    flex: 1,
+    // backgroundColor: 'red'
 }
 
 });
