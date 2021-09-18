@@ -1,8 +1,12 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import { StyleSheet, Text, View, FlatList, Image, RefreshControl, Pressable, StatusBar} from 'react-native';
 import styles from '../Styles/FeedStyles'
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useIsFocused } from "@react-navigation/native";
+import { UserContext } from "../Context/CurrentUser";
+
+
 // import { useNavigation } from '@react-navigation/native';
 
 
@@ -11,14 +15,21 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const Feed = ({route,navigation}) => {
+  const info = useContext(UserContext)
+
+
   // const navigation = useNavigation();
   const [allRooms, setAllRooms] = useState([]) //Stores all current rooms from api
   const [token, setToken] = useState() //Stores all current rooms from api
   const [refreshing, setRefreshing] = useState(false);
+  const [following, setFollowing] = useState([]) //Array of the users the current user is following
+  const isFocused = useIsFocused();
 
 
   useEffect(()=>{ //On page load grab all the rooms
     let isMounted = true;
+
+    if(isFocused && isMounted){
       const getData = async () => {
         try {
           const token = await AsyncStorage.getItem('session-key')
@@ -29,19 +40,26 @@ const Feed = ({route,navigation}) => {
               url: `https://fishbowl-heroku.herokuapp.com/chat/get`,
               headers: { "x-auth-token": `${token}` }
             }).then((res) => {
-                if(isMounted){
                   setAllRooms(res.data.reverse()) //Reversing order of rooms before we set variable, so that newest is at the top
-                }
             })
+          //   axios({
+          //     method: "GET", //Getting the users the current user follows
+          //     url: `https://fishbowl-heroku.herokuapp.com/users/get/${info.name}`,
+          //     headers: { "x-auth-token": `${token}` }
+          // }).then((response) => {
+          //         // setFollowing(response.data.following)
+          // }).catch((error) => {
+          //     console.log('error: ', error);
+  
+          // })
           }
         } catch(e) {
           // error reading value
         }
       }
-      if(isMounted){
-        getData()
-      }
-
+      getData()
+    }
+      
     return () => { isMounted = false };
   },[])
 

@@ -41,7 +41,7 @@ const ChatRoom = ({route, navigation}) =>{
      useEffect(()=>{ //On page load grab all the rooms
         let isMounted = true;
 
-        if(isFocused){
+        if(isFocused && isMounted){
 
           const getToken = async () => {
             try {
@@ -53,9 +53,7 @@ const ChatRoom = ({route, navigation}) =>{
               // error reading value
             }
           }
-          if(isMounted){
             getToken()
-          }
         }
     
         return () => { isMounted = false };

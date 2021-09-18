@@ -109,30 +109,14 @@ function TabNavigator() {
 
 const App = () => {
   const [userInfo, setUserInfo] = useState()
-  console.log('userInfo: ', userInfo);
+  const [username, setUsername] = useState()
 
   const loginToParent = (data) =>{
-    setUserInfo(data)
+    setUserInfo(data[0])
+    setUsername(data[1])
   }
 
-  useEffect(()=>{
-    let isMounted = true;
-    
-      const storeData = async () => {
-        try {
-          if(isMounted){
-            await AsyncStorage.setItem('session-key', userInfo.idToken)
-          }
-        } catch (e) {
-        }
-      }
-    
-    if(isMounted){
-      storeData()
-    }
 
-    return () => { isMounted = false };
-  },[userInfo])
 
   const LoginPage = props =>(
     <Login {...props} loginToParent={loginToParent}/>
@@ -141,7 +125,7 @@ const App = () => {
   if(userInfo !== undefined){ //f we dont have user info return login
     return(
       <NavigationContainer theme={DarkTheme}>
-        <UserContext.Provider value={{ name: userInfo.user.name, email: userInfo.user.email, image: userInfo.user.photoUrl, id: userInfo.user.id }}>
+        <UserContext.Provider value={{ name: username, email: userInfo.user.email, image: userInfo.user.photoUrl, id: userInfo.user.id }}>
         <MainApp.Navigator screenOptions={{"headerShown":false}}>
           <MainApp.Screen name="Feed" component={TabNavigator} />
           <MainApp.Screen name="ChatRoom" component={ChatRoom} />

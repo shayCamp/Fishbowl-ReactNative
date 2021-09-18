@@ -17,6 +17,7 @@ desc: {
     height: '36%',
     width: '100%',
     alignItems: 'center',
+    justifyContent: 'space-evenly',
     // backgroundColor: 'orange'
 },
 loginHolder: {
@@ -32,8 +33,18 @@ loginBtn: {
     width: '85%',
     alignItems: 'center',
     justifyContent: 'center',
+    flexDirection: 'row',
     borderRadius: 10,
     backgroundColor: '#0096ff'
+},
+
+input:{
+    height: '80%',
+    width: '60%',
+    // backgroundColor: 'red',
+    color: 'white',
+    marginRight: 20,
+    fontSize: 18,
 },
 
 text: {
