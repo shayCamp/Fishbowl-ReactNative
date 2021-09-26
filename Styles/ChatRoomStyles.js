@@ -103,8 +103,8 @@ input:{
 replyHolder:{
     minHeight: 80,
     width: '100%',
-    marginTop: 6
-    // backgroundColor: 'grey',
+    marginTop: 6,
+    backgroundColor: '#212529',
     // alignItems: 'center'
 },
 

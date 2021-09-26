@@ -20,7 +20,7 @@ const ChatRoom = ({route, navigation}) =>{
     
     let current_date = new Date()
     let current_year = current_date.getFullYear()
-    let current_month = current_date.getMonth()
+    let current_month = current_date.getMonth() + 1
     let current_day = current_date.getDate()
     let current_hour = current_date.getHours()
     const [empty, setEmpty] = useState()

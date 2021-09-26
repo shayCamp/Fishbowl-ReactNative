@@ -24,8 +24,9 @@ const Stack = createNativeStackNavigator();
 const MyTheme = {
   dark: true,
   colors: {
-    background: '#111213ff',
-    card: '#212529',
+    // #111213ff
+    background: '#1B1F22',
+    card: '#1B1F22',
     text: 'rgb(28, 28, 30)',
     border: 'none',
     notification: 'rgb(255, 69, 58)',

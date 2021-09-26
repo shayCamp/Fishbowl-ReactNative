@@ -7,25 +7,75 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
 
+
     header:{
         width: '100%',
-        backgroundColor: '#212529',
-        height: 80,
+        // backgroundColor: '#212529',
+        height: 120,
         justifyContent: 'center',
-        zIndex: 2
+        zIndex: 2,
     },
 
     list:{
-        backgroundColor: '#212529',
+        // backgroundColor: '#212529',
+        // backgroundColor: 'orange',
         width: '100%',
-        marginTop: 10,
-        paddingBottom: 100
+    },
+
+    gap:{
+        height: 7,
+        width: '100%',
+        backgroundColor: '#111213ff'
+    },
+
+    
+
+    filterIcon:{
+        height: 20,
+        width: 20,
+        marginRight: 15,
+        tintColor: '#0096ff',
+    },
+
+    filterSmallIcon:{
+        height: 25,
+        width: 25,
+        marginRight: 20,
+        tintColor: '#0096ff',
+    },
+
+    filterText:{
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: 'white',
+        opacity: 0.8,
+        marginRight: 15
+    },
+
+    filterOptionText:{
+        fontSize: 18,
+        color: 'white'
+    },
+
+    downIcon:{
+        tintColor: 'white',
+        height: 12,
+        width: 12,
+        
     },
 
     toggle:{
-        height: 60,
-        width: 300,
-        // backgroundColor: 'pink'
+        width: 120,
+        height: 70,
+        // backgroundColor: 'pink',
+        marginLeft: 30,
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+
+    modalView:{
+        flex: 1,
+        marginTop: 'auto'
     },
 
     date: {
@@ -34,7 +84,16 @@ export default StyleSheet.create({
 
     appTitle:{
         color: 'white',
-        fontSize: 22,
+        fontSize: 17,
+        opacity: 0.8,
+        marginLeft: 20,
+        marginBottom: 10,
+    },
+
+    appFeedT:{
+        color: 'white',
+        fontSize: 24,
+        fontWeight: 'bold',
         marginLeft: 20
     },
 
@@ -63,6 +122,37 @@ export default StyleSheet.create({
         // borderColor: 'rgba(255,255,255, 0.2)'
     },
 
+    sortTxt:{
+        marginTop: 16,
+        fontSize: 16,
+        color: 'white',
+        height: 35,
+        borderBottomWidth: 1,
+        borderBottomColor: 'rgba(255,255,255, 0.5)',
+        width: '90%'
+    },
+
+    
+    optionContainer:{
+        marginTop:15,
+        // backgroundColor: 'pink',
+        width: '100%',
+        height: 40,
+        alignItems: 'center',
+        flexDirection: 'row',
+        width: '90%'
+    },
+
+    modalContainer:{
+        height: '40%',
+        backgroundColor: '#303030',
+        flexDirection: 'column',
+        alignItems: 'center',
+        marginTop: 'auto',
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10
+    },
+
     username:{
         color: 'rgba(255,255,255, 0.5)',
         fontSize: 15,
@@ -70,8 +160,7 @@ export default StyleSheet.create({
     },
 
     filter:{
-        height: 60,
-        // backgroundColor: 'orange'
+        // backgroundColor: 'orange',
     },
 
 
@@ -122,8 +211,9 @@ export default StyleSheet.create({
     footer: {
         alignItems: 'center',
         justifyContent: 'center',
-        height: 50,
+        height: 60,
         width: '100%',
+        // marginBottom: 10
     },
 
     noRooms: {
@@ -150,13 +240,14 @@ export default StyleSheet.create({
     answeredHolder:{
         flexDirection: 'row',
         justifyContent: 'flex-end',
-        paddingBottom: 10
+        paddingTop: 20,
+        paddingBottom: 5
     },
 
     block:{
-        height: 30,
+        height: 25,
         marginRight: 20,
-        width: 100,
+        width: 90,
         borderRadius: 5,
         alignItems: 'center',
         justifyContent: 'center',

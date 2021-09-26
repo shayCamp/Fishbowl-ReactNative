@@ -152,10 +152,10 @@ export default StyleSheet.create({
     },
 
     room:{
-        // borderBottomWidth: 1,
-        // borderColor: 'rgba(255,255,255, 0.4)',
-        width: '80%',
-        backgroundColor: 'orange'
+        borderBottomWidth: 1,
+        borderColor: 'rgba(255,255,255, 0.4)',
+        width: '100%',
+        // backgroundColor: 'orange'
     },
 
     userInfo:{
