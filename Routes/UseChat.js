@@ -15,9 +15,11 @@ const info = useContext(UserContext)
 
   useEffect(() => { //A new connection is made whenever room ID changes
 
+
     let isMounted = true;
 
     if(isMounted){
+
       socketRef.current = socketIOClient(SOCKET_SERVER_URL, {
         query: { roomId },
       }); //setting socketRef.current to current socket
@@ -63,7 +65,8 @@ const info = useContext(UserContext)
     socketRef.current.emit(NEW_CHAT_MESSAGE_EVENT, { //Emitting to the server
       text: messageBody,
       senderId: socketRef.current.id,
-      sentBy: info.name,
+      sentByID: info.id,
+      sentByName: info.name,
       sentByImage: info.image,
       date: { year: currentdate.getFullYear(), month: currentdate.getMonth(), day: currentdate.getDate(), hour: currentdate.getHours() },
       likes: []

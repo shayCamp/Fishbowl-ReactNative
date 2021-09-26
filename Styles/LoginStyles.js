@@ -6,6 +6,7 @@ container: {
     flex: 1,
     backgroundColor: '#121212'
 },
+
 svg: {
     height: '50%',
     width: '100%',

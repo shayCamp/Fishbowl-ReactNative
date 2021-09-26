@@ -26,11 +26,10 @@ const ChatRoom = ({route, navigation}) =>{
     const [empty, setEmpty] = useState()
     const { v4: uuidv4 } = require('uuid');
     const [message, setMessage] = useState('')
-    const {roomID} = route.params
     const [token,setToken] = useState('')
     const [room, setRoom] = useState([])
     const [answered, setAnswered] = useState()
-    const [roomSavedMsgs, setRoomSavedMsgs] = useState([])
+
 
 
     /**
@@ -68,10 +67,14 @@ const ChatRoom = ({route, navigation}) =>{
     useEffect(()=>{
         let isMounted = true;
 
+
+
         if(token.length !== 0){
+
+            
             axios({
                 method: 'GET',
-                url: `https://fishbowl-heroku.herokuapp.com/chat/get/id/${roomID}`,
+                url: `https://fishbowl-heroku.herokuapp.com/chat/get/${roomId}`,
                 headers: { "x-auth-token": `${token}` }
             }).then((res) => {
                 if(isMounted){
@@ -79,6 +82,8 @@ const ChatRoom = ({route, navigation}) =>{
                     setAnswered(res.data[0].Answered)
                     setRoomSavedMsgs(res.data[0].Messages);
                 }
+            }).catch((err)=>{
+                console.log(err)
             })
 
         }
@@ -91,8 +96,11 @@ const ChatRoom = ({route, navigation}) =>{
      * Sockets 
      * =======
      */
-    const { messages, sendMessage } = useChat(roomID); //Passing in the room ID into my useChat function which is within another component
+     const {roomId} = route.params
+    const { messages, sendMessage } = useChat(roomId); //Passing in the room ID into my useChat function which is within another component
     const [newMessage, setNewMessage] = useState('') //This stores a message that has currently been typed by a user and submitted
+    const [roomSavedMsgs, setRoomSavedMsgs] = useState([])
+
     /**
      * =======
      * Sockets 
@@ -134,7 +142,8 @@ const ChatRoom = ({route, navigation}) =>{
 
                 const data = { //Creating an object for the current message sent
                     text: newMessage,
-                    sentBy: info.name,
+                    sentByID: info.id,
+                    sentByName: info.name,
                     sentByImage: info.image,
                     date: { year: current_date.getFullYear(), month: current_date.getMonth(), day: current_date.getDate(), hour: current_date.getHours() },
                     likes: [],
@@ -164,41 +173,65 @@ const ChatRoom = ({route, navigation}) =>{
      * ===================================
      */
 
+    /**
+     * ========================================
+     * Redirect to user through comment section
+     * ========================================
+     */
+
+     const redirectToUser = (props) => {
+        axios({
+            method: "GET",
+            url: `https://fishbowl-heroku.herokuapp.com/users/get/${props}`,
+            headers: { "x-auth-token": `${token}` }
+        }).then((response) => {
+            navigation.navigate('Profile', {profile: response.data[0]._id})
+        }).catch((error) => {
+            console.log("error:", error)
+        })
+    }
+
+    /**
+     * ========================================
+     * Redirect to user through comment section
+     * ========================================
+     */
+
     
 
     return(
         <View style={styles.container}>
-            <StatusBar barStyle="dark-content" backgroundColor="#212224ff" />
             <View style={styles.navHeader}>
-                <View style={styles.goBack}>
-                    <Pressable onPress={() => navigation.goBack()}>
-                        <Image
-                        source={require('../SVG/left-arrow.png')}
-                        resizeMode='contain'
-                        style={{
-                            width: 20,
-                            height: 20,
-                            tintColor: 'white'
-                        }}
-                        />
-                    </Pressable>
-                </View>
+                <Pressable style={styles.goBack} onPress={() => navigation.goBack()}>
+                    <View >
+                            <Image
+                            source={require('../SVG/left-arrow.png')}
+                            resizeMode='contain'
+                            style={{
+                                width: 20,
+                                height: 20,
+                                tintColor: 'white'
+                            }}
+                            />
+                    </View>
+                </Pressable>
+
                 <View style={styles.imgntxt}>
                     <Image style={styles.image} source={{uri: room.CreatedByImage}}/>
                     <Text style={styles.text}>{room.Title}</Text>
                 </View>
             </View>
             
-            <ScrollView style={styles.ScrollView} >
+            <ScrollView style={styles.ScrollView}>
                 <View style={styles.lower}>
                     <Text style={styles.Qtext}>{room.Question}</Text>
                 </View>
                 {messages.slice(0).reverse().map((message, i)=>(
                     <View style={styles.replyHolder} key={i}>
                     <View style={styles.top}>
-                        <Pressable style={styles.userToClick}>
+                        <Pressable style={styles.userToClick} onPress={() => redirectToUser(message.sentByID)}>
                             <Image style={styles.userImage} source={{uri: message.sentByImage}}/>
-                            <Text style={styles.textProfile}>{message.sentBy}</Text>
+                            <Text style={styles.textProfile}>{message.sentByName}</Text>
                             <Text style={styles.textDate}>{`· ${current_year === message.date.year ? current_month === message.date.month ? current_day === message.date.day ? current_hour === message.date.hour ? `<1h` : current_hour - message.date.hour + `h` : current_day - message.date.day + `d` : current_month - message.date.month + `m` : current_year - message.date.year + `y`}`}</Text>
                         </Pressable>
                     </View>
@@ -212,9 +245,9 @@ const ChatRoom = ({route, navigation}) =>{
                 {roomSavedMsgs.slice(0).reverse().map((savedMessage, i)=>(
                     <View style={styles.replyHolder} key={i}>
                         <View style={styles.top}>
-                            <Pressable style={styles.userToClick}>
+                            <Pressable style={styles.userToClick} onPress={() => redirectToUser(savedMessage.sentByID)}>
                                 <Image style={styles.userImage} source={{uri: savedMessage.sentByImage}}/>
-                                <Text style={styles.textProfile}>{savedMessage.sentBy}</Text>
+                                <Text style={styles.textProfile}>{savedMessage.sentByName}</Text>
                                 <Text style={styles.textDate}>{`· ${current_year === savedMessage.date.year ? current_month === savedMessage.date.month ? current_day === savedMessage.date.day ? current_hour === savedMessage.date.hour ? `<1h` : current_hour - savedMessage.date.hour + `h` : current_day - savedMessage.date.day + `d` : current_month - savedMessage.date.month + `m` : current_year - savedMessage.date.year + `y`}`}</Text>
                             </Pressable>
                         </View>
@@ -231,7 +264,7 @@ const ChatRoom = ({route, navigation}) =>{
                 <Image style={styles.imageChatbar} source={{uri: info.image}}/>
                 <TextInput style={styles.input} selectionColor={'white'} placeholder={'Message'} value={newMessage} placeholderTextColor="white" onChangeText={message => setNewMessage(message)}/>
                 {newMessage.length !== 0? (
-                    <Pressable onPress={()=>handleSendMessage}>
+                    <Pressable onPress={handleSendMessage}>
                     <Image
                     source={require('../SVG/sendF.png')}
                     resizeMode='contain'

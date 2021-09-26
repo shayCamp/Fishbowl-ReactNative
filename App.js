@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect,useContext} from 'react';
 import { StyleSheet, Text, View,Image } from 'react-native';
 import { NavigationContainer,  DarkTheme, DefaultTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -16,6 +16,7 @@ import { UserContext } from "./Context/CurrentUser";
 
 
 
+
 const Tab = createBottomTabNavigator();
 const MainApp = createNativeStackNavigator();
 const Stack = createNativeStackNavigator();
@@ -23,23 +24,27 @@ const Stack = createNativeStackNavigator();
 const MyTheme = {
   dark: true,
   colors: {
-    primary: 'red',
-    background: 'green',
-    card: 'orange',
+    background: '#111213ff',
+    card: '#212529',
     text: 'rgb(28, 28, 30)',
-    border: 'rgb(199, 199, 204)',
+    border: 'none',
     notification: 'rgb(255, 69, 58)',
   },
 };
 
 
+
+
 function TabNavigator() {
+  const info = useContext(UserContext)
+
+
     return (
       <>
         <Tab.Navigator screenOptions={{
           "headerShown":false,
           "tabBarShowLabel": false,
-          "tabBarStyle": {backgroundColor:'#212224'}
+          "tabBarStyle": {borderTopWidth: 0}
         }}>
           <Tab.Screen name="FeedNavigator" component={Feed} options={{
             tabBarIcon: ({focused}) => (
@@ -110,11 +115,14 @@ function TabNavigator() {
 const App = () => {
   const [userInfo, setUserInfo] = useState()
   const [username, setUsername] = useState()
+  const [id, setID] = useState()
 
   const loginToParent = (data) =>{
     setUserInfo(data[0])
     setUsername(data[1])
+    setID(data[2])
   }
+
 
 
 
@@ -122,10 +130,10 @@ const App = () => {
     <Login {...props} loginToParent={loginToParent}/>
   )
   
-  if(userInfo !== undefined && username !== undefined){ //f we dont have user info return login
+  if(userInfo !== undefined && username !== undefined && id !== undefined){ //f we dont have user info return login
     return(
-      <NavigationContainer theme={DarkTheme}>
-        <UserContext.Provider value={{ name: username, email: userInfo.user.email, image: userInfo.user.photoUrl, id: userInfo.user.id }}>
+      <NavigationContainer theme={MyTheme}>
+        <UserContext.Provider value={{ name: username, email: userInfo.user.email, image: userInfo.user.photoUrl, id: id }}>
         <MainApp.Navigator screenOptions={{"headerShown":false}}>
           <MainApp.Screen name="Feed" component={TabNavigator} />
           <MainApp.Screen name="ChatRoom" component={ChatRoom} />

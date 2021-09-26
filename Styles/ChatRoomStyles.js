@@ -4,21 +4,21 @@ export default StyleSheet.create({
 
 container: {
     flex: 1,
-    backgroundColor: '#111213ff',
+    // backgroundColor: '#111213ff',
 },
 
 chatBar: {
     height: 60,
     width: '100%',
     alignItems:'center',
-    backgroundColor: '#212224ff',
+    backgroundColor: '#212529',
     flexDirection: 'row',
 },
 
 navHeader: {
     width: '100%',
     flexDirection: 'column',
-    backgroundColor: '#212224ff',
+    backgroundColor: '#212529',
     // backgroundColor:'teal',
     paddingTop: 20,
     flexDirection: 'row',
@@ -29,7 +29,9 @@ navHeader: {
 goBack: {
     width: '15%',
     alignItems:'center',
-    // backgroundColor: 'red'
+    // backgroundColor: 'red',
+    height: 40,
+    justifyContent: 'center'
 },
 
 imgntxt:{
@@ -49,22 +51,22 @@ lower:{
     alignItems: 'center',
     justifyContent: 'center',
     paddingBottom: 20,
-    backgroundColor: '#212224ff',
+    backgroundColor: '#212529',
     width: '100%'
 },
 
 Qtext:{
     color: 'white',
-    fontSize: 16,
+    fontSize: 18,
     maxWidth: '85%',
     textAlign: 'center'
 },
 
 
 image:{
-    height: 40,
-    width: 40,
-    borderRadius: 20,
+    height: 50,
+    width: 50,
+    borderRadius: 25,
     marginRight: 20
 },
 

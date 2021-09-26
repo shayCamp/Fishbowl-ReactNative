@@ -4,41 +4,52 @@ export default StyleSheet.create({
     container: {
         flex: 1,
         width: '100%',
-        backgroundColor: '#111213ff'
+        alignItems: 'center'
     },
 
     header:{
         width: '100%',
+        backgroundColor: '#212529',
+        height: 80,
+        justifyContent: 'center',
+        zIndex: 2
     },
 
-
-    friendsBar:{
-        height: 120,
+    list:{
+        backgroundColor: '#212529',
         width: '100%',
-        borderBottomWidth: 1,
-        borderColor: 'rgba(255,255,255, 0.4)',
-        flexDirection: 'row',
-        alignItems: 'center'
+        marginTop: 10,
+        paddingBottom: 100
     },
 
-    filter:{
-        height: 40,
-        width: '100%',
-        borderBottomWidth: 1,
-        borderColor: 'rgba(255,255,255, 0.4)'
+    toggle:{
+        height: 60,
+        width: 300,
+        // backgroundColor: 'pink'
     },
+
+    date: {
+        fontSize: 15,
+    },
+
+    appTitle:{
+        color: 'white',
+        fontSize: 22,
+        marginLeft: 20
+    },
+
 
     Title: {
-        color: 'white',
-        fontSize: 20,
-        marginLeft: 25,
-        marginBottom: 15
+        color: 'rgba(255,255,255, 0.5)',
+        fontSize: 18,
+        // marginLeft: 25,
+        marginBottom: 4
     },
 
     Question: {
         color: 'white',
-        fontSize: 18,
-        marginLeft: 25,
+        fontSize: 22,
+        // marginLeft: 25,
         maxWidth: '85%'
     },
 
@@ -46,43 +57,30 @@ export default StyleSheet.create({
         height: 60,
         width: '100%',
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginBottom: 10
+        // borderBottomWidth: 1,
+        // borderColor: 'rgba(255,255,255, 0.2)'
     },
 
     username:{
-        color: 'white',
-        fontSize: 16,
+        color: 'rgba(255,255,255, 0.5)',
+        fontSize: 15,
         fontWeight: 'bold'
     },
 
-    profileImage:{
-        height: 65,
-        width: 65,
-        borderRadius: 40,
+    filter:{
+        height: 60,
+        // backgroundColor: 'orange'
     },
+
 
     image:{
-        height: 35,
-        width: 35,
-        borderRadius: 20,
-        marginLeft: 15,
-        marginRight: 15
+        height: 90,
+        width: 90,
+        borderRadius: 14,
     },
 
-    friendProfileHolder:{
-        // backgroundColor: 'orange',
-        height: '75%',
-        marginLeft: 15,
-        marginRight: 15,
-        alignItems: 'center',
-        justifyContent: 'space-between'
-    },
-
-    profileText:{
-        fontSize: 13,
-        opacity: 0.9,
-        color: 'white'
-    },
 
     roomInfo:{
         paddingBottom: 25,
@@ -92,8 +90,33 @@ export default StyleSheet.create({
     },
 
     room:{
-        borderBottomWidth: 1,
-        borderColor: 'rgba(255,255,255, 0.4)'
+        width: '90%',
+        paddingTop: 20, 
+        marginLeft: 'auto',
+        marginRight: 'auto',
+
+    },
+
+    top:{
+        // backgroundColor: 'red',
+        flexDirection: 'row'
+    },
+
+    left: {
+        minHeight: 90,
+        width: '30%',
+        // backgroundColor: 'aqua',
+    },
+
+    right:{
+        minHeight: 90,
+        width: '70%',
+        // backgroundColor: 'pink'
+    },
+
+    border:{
+        fontSize: 16,
+        color: 'rgba(255,255,255, 0.15)'
     },
 
     footer: {
@@ -119,7 +142,7 @@ export default StyleSheet.create({
         alignItems: 'center',
         height: 30,
         width: 110,
-        marginLeft: 15,
+        // marginLeft: 15,
         borderRadius: 15,
         backgroundColor: '#384357',
     },

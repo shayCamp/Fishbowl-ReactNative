@@ -33,6 +33,7 @@ const Login = ({loginToParent}) => {
       .then((result) => {
         setCreateUser(false)
         setToken(result.idToken)
+        setEmail(result.email)
         checkUsername(result)
       })
       .catch((error) => {
@@ -63,7 +64,7 @@ const Login = ({loginToParent}) => {
           if(response.data.filter((user)=> user.email === result.user.email).length > 0){
               response.data.map((user)=>{
                   if(user.email === result.user.email){
-                      logExistingUserIn([result, user.username])
+                      logExistingUserIn([result, user.username, user._id])
                   }
               })
           }else{
@@ -92,7 +93,24 @@ const Login = ({loginToParent}) => {
           if(response.data.msg === "user already exists"){
               setUsernameTaken(true)
           }else{
-              loginToParent([result, username])
+
+            axios({
+              method: "GET",
+              url: "https://fishbowl-heroku.herokuapp.com/users/get",
+              headers: { "x-auth-token": `${token}`},
+            }).then((response)=>{
+              if(response.data.length !== 0){
+                  response.data.map((user)=>{
+                        if(user.email === email){
+                            logExistingUserIn([result, user.username, user._id])
+                        }
+                    })
+              }else{
+                  setCreateUser(true)
+              }
+                  
+          })
+              // loginToParent([result, username, ])
           }
       }).catch((error)=>{
           console.log('error: ', error);
