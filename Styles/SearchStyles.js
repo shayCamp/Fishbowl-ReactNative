@@ -15,9 +15,10 @@ export default StyleSheet.create({
     },
 
     userHolder:{
-        height: 50,
+        height: 60,
         width: '100%',
-        backgroundColor: 'orange'
+        flexDirection: 'row',
+        alignItems: 'center'
     },
 
     searchHolder:{
@@ -36,6 +37,51 @@ export default StyleSheet.create({
         tintColor: 'white',
         opacity: 0.5,
         marginRight: 15
+    },
+    
+
+    followBtn:{
+        height: 35,
+        width: 90,
+        borderWidth: 1,
+        borderColor: 'white',
+        marginLeft: 'auto',
+        marginRight: 20,
+        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+
+    followingBtn:{
+        height: 35,
+        width: 90,
+        borderWidth: 1,
+        borderColor: 'white',
+        marginLeft: 'auto',
+        marginRight: 20,
+        borderRadius: 5,
+        backgroundColor: '#0096ff',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+
+    followingTxt:{
+        color: 'white',
+        fontSize: 16,
+        fontWeight: '700'
+    },
+
+    userImage:{
+        height: 45,
+        width: 45,
+        borderRadius: 22.5,
+        marginLeft: 25,
+        marginRight: 20
+    },
+
+    userTxt:{
+        color: 'white',
+        fontSize: 16,
     },
 
     input:{

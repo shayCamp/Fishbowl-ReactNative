@@ -16,12 +16,11 @@ const Search = ({navigation}) => {
   const info = useContext(UserContext)
   const [token,setToken] = useState()
   const [allRooms, setAllRooms] = useState([]) //Stores all current rooms from api
-  console.log('allRooms: ', allRooms);
   const [refreshing, setRefreshing] = useState(false);
   const isFocused = useIsFocused();
   const [following, setFollowing] = useState([]) //Array of the users the current user is following
   const [users,setUsers] = useState([])
-  console.log('users: ', users.length);
+  console.log('users: ', users);
   const [searchFilter, setSearchFilter] = useState('')
   let current_date = new Date()
   let current_year = current_date.getFullYear()
@@ -138,8 +137,13 @@ const Search = ({navigation}) => {
         />
       }
       renderItem={({item})=> (
-        <Pressable style={styles.userHolder}>
-          <Text>{item.username}</Text>
+        <Pressable style={styles.userHolder} onPress={()=> navigation.navigate('UsersPage', {userID: item._id})}>
+          <Image style={styles.userImage} source={{uri: item.image}}/>
+          <Text style={styles.userTxt}>{item.username}</Text>
+          <Pressable style={following.includes(item.username) ? styles.followingBtn : styles.followBtn} onPress={() => requests(item.username, !following.includes(item.username))}>
+            {following.includes(item.username) ? <Text style={styles.followingTxt}>Following</Text> : null}
+            {following.includes(item.username) ? null : <Text style={styles.followingTxt}>Follow</Text>}
+          </Pressable>
         </Pressable>
       )}
     />
@@ -149,11 +153,51 @@ const Search = ({navigation}) => {
         null
       )
     }
-    
-      
-
-    
   }
+
+    const requests = (userID, value) => { //Handling following and unfollowing
+      if (value) {
+          axios({
+              method: 'PUT',
+              url: `https://fishbowl-heroku.herokuapp.com/users/update/${info.id}`,
+              headers: { "x-auth-token": `${token}` },
+              data: { following: userID }
+          }).then((res) => {
+              getFollowing() //Once a user makes a request update their display
+              setFlag(!flag) //Change flag to indicate that a user has made request
+          }).catch((error) => {
+              console.log('error: ', error);
+
+          })
+      } else if (!value) {
+          axios({
+              method: 'PUT',
+              url: `https://fishbowl-heroku.herokuapp.com/users/update/${info.id}`,
+              headers: { "x-auth-token": `${token}` },
+              data: { unfollowing: userID }
+          }).then((res) => {
+              getFollowing() //Once a user makes a request update their display
+              setFlag(!flag) //Change flag to indicate that a user has made request
+          }).catch((error) => {
+              console.log('error: ', error);
+
+          })
+      }
+  }
+
+  const getFollowing = () => { //Get following array
+      axios({
+          method: "GET",
+          url: `https://fishbowl-heroku.herokuapp.com/users/get/${info.id}`,
+          headers: { "x-auth-token": `${token}` }
+      }).then((response) => {
+          setFollowing(response.data[0].following)
+      }).catch((error) => {
+          console.log('error: ', error);
+
+      })
+  }
+
   return(
       <View style={styles.container}>
         <View style={styles.header}>

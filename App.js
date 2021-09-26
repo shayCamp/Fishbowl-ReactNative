@@ -12,6 +12,7 @@ import CreateRoom from './Routes/CreateRoom.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ChatRoom from './Routes/ChatRoom.js';
 import { UserContext } from "./Context/CurrentUser";
+import UsersPage from './Routes/UsersPage.js';
 
 
 
@@ -138,6 +139,7 @@ const App = () => {
         <MainApp.Navigator screenOptions={{"headerShown":false}}>
           <MainApp.Screen name="Feed" component={TabNavigator} />
           <MainApp.Screen name="ChatRoom" component={ChatRoom} />
+          <MainApp.Screen name="UsersPage" component={UsersPage} />
         </MainApp.Navigator>
         </UserContext.Provider>
       </NavigationContainer>
