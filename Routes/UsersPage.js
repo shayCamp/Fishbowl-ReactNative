@@ -14,85 +14,15 @@ import axios from 'axios';
 
 
 const UsersPage = ({route, navigation}) => {
-  const {userID} = route.params
-  const info = useContext(UserContext)
-  const isFocused = useIsFocused();
-  const [currentUser, setCurrentUser] = useState('')
-  const [loading,setLoading] = useState(false)
-  const [usersRooms, setUsersRooms] = useState([])
-  const [token,setToken] = useState()
-  const [refreshing, setRefreshing] = useState(false);
 
-  
-
-  /**
-     * ==========
-     * Get token
-     * ==========
-     */
-   useEffect(()=>{ //On page load grab all the rooms
-    let isMounted = true;
-    setLoading(true)
-
-    if(isFocused && isMounted){
-
-      const getToken = async () => {
-        try {
-          const token = await AsyncStorage.getItem('session-key')
-          setToken(token)
-
-          if(token !== null) {
-            console.log("getting")
-            axios({
-              method: 'GET',
-              url: `https://fishbowl-heroku.herokuapp.com/users/get/${userID}`,
-              headers: { "x-auth-token": `${token}` }
-            }).then((res) => {
-                setCurrentUser(res.data[0])
-            }).catch((err)=>{
-              console.log(err)
-            })
-
-            axios({
-              method: 'GET',
-              url: `https://fishbowl-heroku.herokuapp.com/chat/get/specificUserRoom/${userID}`,
-              headers: { "x-auth-token": `${token}` }
-            }).then((res) => {
-              console.log('res: ', res);
-                setUsersRooms(res.data.reverse())
-                setLoading(false)
-            }).catch((err)=>{
-                console.log(err)
-            })
-
-          }
-        } catch(e) {
-          // error reading value
-        }
-      }
-      getToken()
-    }
-
-    // setLoading(false)
-
-
-
-    return () => { isMounted = false };
-  },[isFocused])
-/**
- * ==========
- * Get token
- * ==========
- */
 
  const onRefresh = () =>{
   setRefreshing(true);
   axios({
     method: 'GET',
     url: `https://fishbowl-heroku.herokuapp.com/chat/get/specificUserRoom/${userID}`,
-    headers: { "x-auth-token": `${token}` }
+    headers: { "x-auth-token": `${info.token}` }
   }).then((res) => {
-    console.log('res: ', res);
       setUsersRooms(res.data.reverse())
       setRefreshing(false)
   }).catch((err)=>{

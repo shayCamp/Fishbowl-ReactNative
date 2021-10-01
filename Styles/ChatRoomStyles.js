@@ -13,17 +13,32 @@ chatBar: {
     alignItems:'center',
     backgroundColor: '#212529',
     flexDirection: 'row',
+    marginTop: 6
 },
 
 navHeader: {
     width: '100%',
     flexDirection: 'column',
-    backgroundColor: '#212529',
-    // backgroundColor:'teal',
-    paddingTop: 20,
+    // backgroundColor: 'orange',
+    // borderBottomWidth: 1,
+    // borderBottomColor: 'rgba(255, 255, 255, 0.2)',
+    paddingTop: 15,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingBottom: 20,
+    // justifyContent: 'space-between',
+    paddingBottom: 10,
+},
+
+left:{
+    minHeight: 65,
+    width: '20%',
+    // backgroundColor: 'orange'
+},
+
+right:{
+    minHeight: 65,
+    width: '80%',
+    // backgroundColor: 'aqua'
 },
 
 goBack: {
@@ -34,12 +49,21 @@ goBack: {
     justifyContent: 'center'
 },
 
+edit: {
+    width: '15%',
+    alignItems:'center',
+    // backgroundColor: 'red',
+    height: 40,
+    justifyContent: 'center'
+},
+
 imgntxt:{
-    width: '80%',
+    width: '70%',
     // backgroundColor: 'orange',
     flexDirection: 'row',
     alignItems:'center',
-    justifyContent:'center'
+    justifyContent:'center',
+    opacity: 0.8
 },
 
 
@@ -49,25 +73,45 @@ lower:{
     paddingTop: 20,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    // justifyContent: 'center',
     paddingBottom: 20,
-    backgroundColor: '#212529',
-    width: '100%'
+    paddingLeft: 15,
+    paddingRight: 15,
+    width: '100%',
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(255, 255, 255, 0.2)',
 },
 
 Qtext:{
+    marginLeft: 10,
     color: 'white',
     fontSize: 18,
     maxWidth: '85%',
-    textAlign: 'center'
+},
+
+Otext:{
+    marginLeft: 10,
+    color: 'white',
+    fontSize: 16,
+    opacity: 0.5,
+    maxWidth: '85%',
 },
 
 
 image:{
-    height: 50,
-    width: 50,
-    borderRadius: 25,
+    height: 65,
+    width: 65,
+    // borderWidth: 1,
+    // borderColor: 'white',
+    borderRadius: 10,
     marginRight: 20
+},
+
+settingsIcon:{
+    height: 20,
+    width: 20,
+    marginRight: 20,
+    tintColor: 'white'
 },
 
 imageChatbar:{
@@ -76,7 +120,7 @@ imageChatbar:{
     marginLeft: 20,
     marginRight: 25,
     backgroundColor: 'red',
-    borderRadius: 20,
+    borderRadius: 10,
 },
 
 text:{
@@ -147,7 +191,7 @@ replyText:{
 userImage:{
     height: 45,
     width: 45,
-    borderRadius: 45/2,
+    borderRadius: 10,
     marginRight: 20
 },
 

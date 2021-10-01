@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React, {useState, useEffect,useContext} from 'react';
-import { StyleSheet, Text, View,Image } from 'react-native';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { StyleSheet, Text, View,Image, Pressable } from 'react-native';
 import { NavigationContainer,  DarkTheme, DefaultTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -37,8 +38,12 @@ const MyTheme = {
 
 
 
-function TabNavigator() {
+function TabNavigator({navigation}) {
   const info = useContext(UserContext)
+
+  const ProfilePage = props =>(
+    <Profile {...props} profile={info.id}/>
+  )
 
 
     return (
@@ -93,9 +98,9 @@ function TabNavigator() {
               </View>
             )
           }} />
-          <Tab.Screen name="Profile" component={Profile} options={{
+          <Tab.Screen name="Profile" component={ProfilePage} options={{
             tabBarIcon: ({focused}) => (
-              <View style={{alignItems: 'center', justifyContent: 'center'}}>
+              <Pressable style={{alignItems: 'center', justifyContent: 'center'}} onPress={()=>navigation.navigate('Profile', {profile: info.id})}>
                 <Image
                 source={require('./SVG/user.png')}
                 resizeMode='contain'
@@ -105,8 +110,8 @@ function TabNavigator() {
                   tintColor: focused? "#0096ff" : "#748c94"
                 }}
                 />
-              </View>
-            )
+              </Pressable>
+            ),
           }} />
           
         </Tab.Navigator>
@@ -118,6 +123,7 @@ const App = () => {
   const [userInfo, setUserInfo] = useState()
   const [username, setUsername] = useState()
   const [id, setID] = useState()
+  const [token,setToken] = useState()
 
   const loginToParent = (data) =>{
     setUserInfo(data[0])
@@ -131,11 +137,13 @@ const App = () => {
   const LoginPage = props =>(
     <Login {...props} loginToParent={loginToParent}/>
   )
+
   
-  if(userInfo !== undefined && username !== undefined && id !== undefined){ //f we dont have user info return login
+  
+  if(userInfo !== undefined && username !== undefined && id !== undefined && userInfo.idToken !== undefined){ //f we dont have user info return login
     return(
       <NavigationContainer theme={MyTheme}>
-        <UserContext.Provider value={{ name: username, email: userInfo.user.email, image: userInfo.user.photoUrl, id: id }}>
+        <UserContext.Provider value={{ name: username, email: userInfo.user.email, image: userInfo.user.photoUrl, id: id, token: userInfo.idToken}}>
         <MainApp.Navigator screenOptions={{"headerShown":false}}>
           <MainApp.Screen name="Feed" component={TabNavigator} />
           <MainApp.Screen name="ChatRoom" component={ChatRoom} />
@@ -146,7 +154,7 @@ const App = () => {
     )
   }else{
     return (
-      <NavigationContainer>
+      <NavigationContainer theme={MyTheme}>
         <Stack.Navigator screenOptions={{
           headerShown: false
         }}>

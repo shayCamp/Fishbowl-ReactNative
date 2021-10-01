@@ -5,6 +5,7 @@ import styles from '../Styles/ChatRoomStyles'
 import useChat from './UseChat'
 import { UserContext } from "../Context/CurrentUser";
 import axios from 'axios';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
@@ -20,62 +21,25 @@ const ChatRoom = ({route, navigation}) =>{
     
     let current_date = new Date()
     let current_year = current_date.getFullYear()
-    let current_month = current_date.getMonth() + 1
+    let current_month = current_date.getMonth()
     let current_day = current_date.getDate()
     let current_hour = current_date.getHours()
+    let months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
     const [empty, setEmpty] = useState()
     const { v4: uuidv4 } = require('uuid');
     const [message, setMessage] = useState('')
     const [token,setToken] = useState('')
     const [room, setRoom] = useState([])
     const [answered, setAnswered] = useState()
+    const [settingsVisible, setSettingsVisible] = useState(false)
 
 
-
-    /**
-     * ==========
-     * Get token
-     * ==========
-     */
-     useEffect(()=>{ //On page load grab all the rooms
-        let isMounted = true;
-
-        if(isFocused && isMounted){
-
-          const getToken = async () => {
-            try {
-              const token = await AsyncStorage.getItem('session-key')
-              if(token !== null) {
-                setToken(token)
-              }
-            } catch(e) {
-              // error reading value
-            }
-          }
-            getToken()
-        }
-    
-        return () => { isMounted = false };
-      },[isFocused])
-    /**
-     * ==========
-     * Get token
-     * ==========
-     */
-
-    //Getting current room messages on page load
     useEffect(()=>{
         let isMounted = true;
-
-
-
-        if(token.length !== 0){
-
-            
             axios({
                 method: 'GET',
                 url: `https://fishbowl-heroku.herokuapp.com/chat/get/${roomId}`,
-                headers: { "x-auth-token": `${token}` }
+                headers: { "x-auth-token": `${info.token}` }
             }).then((res) => {
                 if(isMounted){
                     setRoom(res.data[0]);
@@ -85,11 +49,8 @@ const ChatRoom = ({route, navigation}) =>{
             }).catch((err)=>{
                 console.log(err)
             })
-
-        }
-
         return () => { isMounted = false };
-    },[token])
+    },[])
 
     /**
      * =======
@@ -154,10 +115,9 @@ const ChatRoom = ({route, navigation}) =>{
                 axios({ //Uploading the message to the current rooms message array
                     method: `PUT`,
                     url: `https://fishbowl-heroku.herokuapp.com/chat/update/${room._id}`,
-                    headers: { "x-auth-token": `${token}` },
+                    headers: { "x-auth-token": `${info.token}` },
                     data: { message: data }
                 }).then((res) => {
-                    console.log('res: ', res.data);
                 }).catch((error) => {
                     console.log("error", error)
                 })
@@ -183,7 +143,7 @@ const ChatRoom = ({route, navigation}) =>{
         axios({
             method: "GET",
             url: `https://fishbowl-heroku.herokuapp.com/users/get/${props}`,
-            headers: { "x-auth-token": `${token}` }
+            headers: { "x-auth-token": `${info.token}` }
         }).then((response) => {
             navigation.navigate('Profile', {profile: response.data[0]._id})
         }).catch((error) => {
@@ -215,24 +175,38 @@ const ChatRoom = ({route, navigation}) =>{
                             />
                     </View>
                 </Pressable>
-
                 <View style={styles.imgntxt}>
-                    <Image style={styles.image} source={{uri: room.CreatedByImage}}/>
-                    <Text style={styles.text}>{room.Title}</Text>
+                    <Text style={styles.text}>{settingsVisible?`Settings`:room.Title}</Text>
                 </View>
+                <Pressable style={styles.edit} onPress={()=> setSettingsVisible(!settingsVisible)}>
+                    {room.CreatedByName === info.name?(
+                        <Image style={styles.settingsIcon} source={require('../SVG/settings.png')}/>
+                    ):null}
+                </Pressable>
             </View>
-            
             <ScrollView style={styles.ScrollView}>
                 <View style={styles.lower}>
-                    <Text style={styles.Qtext}>{room.Question}</Text>
+                    {settingsVisible? <Text>Edit Room and stuff</Text>: (
+                        <>
+                            <View style={styles.left}>
+                                <Image style={styles.image} source={{uri: room.CreatedByImage}}/>
+                            </View>
+                            <View style={styles.right}>
+                                <Text style={styles.Otext}>{room.CreatedByName}</Text>
+                                <Text style={styles.Qtext}>{room.Question}</Text>
+                            </View>
+                        </>
+                    )}
                 </View>
+                {/* {settingsVisible?<Text>Edit Rooms an</Text>: } */}
                 {messages.slice(0).reverse().map((message, i)=>(
                     <View style={styles.replyHolder} key={i}>
                     <View style={styles.top}>
                         <Pressable style={styles.userToClick} onPress={() => redirectToUser(message.sentByID)}>
                             <Image style={styles.userImage} source={{uri: message.sentByImage}}/>
                             <Text style={styles.textProfile}>{message.sentByName}</Text>
-                            <Text style={styles.textDate}>{`· ${current_year === message.date.year ? current_month === message.date.month ? current_day === message.date.day ? current_hour === message.date.hour ? `<1h` : current_hour - message.date.hour + `h` : current_day - message.date.day + `d` : current_month - message.date.month + `m` : current_year - message.date.year + `y`}`}</Text>
+                            <Text style={styles.textDate}>{`· ${current_year === message.date.year ? current_month === message.date.month ? current_day === message.date.day ? current_hour === message.date.hour ? `<1h` : current_hour - message.date.hour + `h` : current_day - message.date.day + `d` : `${savedMessage.date.day} ${months[savedMessage.date.month].substring(0,3)}` : current_year - message.date.year + `y`}`}</Text>
+
                         </Pressable>
                     </View>
                     <View style={styles.middle}>
@@ -248,7 +222,7 @@ const ChatRoom = ({route, navigation}) =>{
                             <Pressable style={styles.userToClick} onPress={() => redirectToUser(savedMessage.sentByID)}>
                                 <Image style={styles.userImage} source={{uri: savedMessage.sentByImage}}/>
                                 <Text style={styles.textProfile}>{savedMessage.sentByName}</Text>
-                                <Text style={styles.textDate}>{`· ${current_year === savedMessage.date.year ? current_month === savedMessage.date.month ? current_day === savedMessage.date.day ? current_hour === savedMessage.date.hour ? `<1h` : current_hour - savedMessage.date.hour + `h` : current_day - savedMessage.date.day + `d` : current_month - savedMessage.date.month + `m` : current_year - savedMessage.date.year + `y`}`}</Text>
+                                <Text style={styles.textDate}>{`· ${current_year === savedMessage.date.year ? current_month === savedMessage.date.month ? current_day === savedMessage.date.day ? current_hour === savedMessage.date.hour ? `<1h` : current_hour - savedMessage.date.hour + `h` : current_day - savedMessage.date.day + `d` : `${savedMessage.date.day} ${months[savedMessage.date.month].substring(0,3)}` : current_year - savedMessage.date.year + `y`}`}</Text>
                             </Pressable>
                         </View>
                         <View style={styles.middle}>

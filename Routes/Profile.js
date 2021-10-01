@@ -14,16 +14,15 @@ import axios from 'axios';
 
 
 const Profile = ({route, navigation}) => {
+  console.log('route: ', route.params);
   const info = useContext(UserContext)
-  console.log('info: ', info);
   const isFocused = useIsFocused();
   const [currentUser, setCurrentUser] = useState('')
   const [loading,setLoading] = useState(false)
   const [usersRooms, setUsersRooms] = useState([])
   const [token,setToken] = useState()
-
-  console.log('usersRooms: ', usersRooms);
   const [refreshing, setRefreshing] = useState(false);
+  const [myPage, setMyPage] = useState(route.params.profile === info.id)
 
   
 
@@ -37,47 +36,26 @@ const Profile = ({route, navigation}) => {
     // setLoading(true)
 
     if(isFocused && isMounted){
+        axios({
+          method: 'GET',
+          url: `https://fishbowl-heroku.herokuapp.com/users/get/${route.params.profile}`,
+          headers: { "x-auth-token": `${info.token}` }
+        }).then((res) => {
+            setCurrentUser(res.data[0])
+        }).catch((err)=>{
+          console.log(err)
+        })
 
-      const getToken = async () => {
-        try {
-          const token = await AsyncStorage.getItem('session-key')
-          setToken(token)
-
-          if(token !== null) {
-            console.log("getting")
-            axios({
-              method: 'GET',
-              url: `https://fishbowl-heroku.herokuapp.com/users/get/${info.id}`,
-              headers: { "x-auth-token": `${token}` }
-            }).then((res) => {
-                setCurrentUser(res.data[0])
-            }).catch((err)=>{
-              console.log(err)
-            })
-
-            axios({
-              method: 'GET',
-              url: `https://fishbowl-heroku.herokuapp.com/chat/get/specificUserRoom/${info.id}`,
-              headers: { "x-auth-token": `${token}` }
-            }).then((res) => {
-              console.log('res: ', res);
-                setUsersRooms(res.data.reverse())
-            }).catch((err)=>{
-                console.log(err)
-            })
-
-          }
-        } catch(e) {
-          // error reading value
-        }
-      }
-      getToken()
+        axios({
+          method: 'GET',
+          url: `https://fishbowl-heroku.herokuapp.com/chat/get/specificUserRoom/${route.params.profile}`,
+          headers: { "x-auth-token": `${info.token}` }
+        }).then((res) => {
+            setUsersRooms(res.data.reverse())
+        }).catch((err)=>{
+            console.log(err)
+        })
     }
-
-    // setLoading(false)
-
-
-
     return () => { isMounted = false };
   },[isFocused])
 /**
@@ -91,9 +69,8 @@ const Profile = ({route, navigation}) => {
   axios({
     method: 'GET',
     url: `https://fishbowl-heroku.herokuapp.com/chat/get/specificUserRoom/${info.id}`,
-    headers: { "x-auth-token": `${token}` }
+    headers: { "x-auth-token": `${info.token}` }
   }).then((res) => {
-    console.log('res: ', res);
       setUsersRooms(res.data.reverse())
       setRefreshing(false)
   }).catch((err)=>{
@@ -121,11 +98,14 @@ const Profile = ({route, navigation}) => {
           <Text>Loading</Text>
         ):(
           <>
-            <View style={styles.edit}>
-              <Pressable>
-                <Image style={styles.settingsIcon} source={require('../SVG/settings.png')}/>
-              </Pressable>
-            </View>
+           {myPage?(
+             <View style={styles.edit}>
+             <Pressable>
+               <Image style={styles.settingsIcon} source={require('../SVG/settings.png')}/>
+             </Pressable>
+           </View>
+           ): null}
+            
             <View style={styles.profileImage}>
               <Image style={styles.image} source={{uri: currentUser.image}}/>
               <Text style={styles.username}>{currentUser.username}</Text>

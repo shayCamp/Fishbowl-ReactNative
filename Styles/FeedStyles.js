@@ -10,16 +10,19 @@ export default StyleSheet.create({
 
     header:{
         width: '100%',
-        // backgroundColor: '#212529',
+        backgroundColor: '#1B1F22',
         height: 120,
         justifyContent: 'center',
-        zIndex: 2,
+        zIndex: 400
     },
+
+
 
     list:{
         // backgroundColor: '#212529',
         // backgroundColor: 'orange',
         width: '100%',
+        marginBottom: 120
     },
 
     gap:{
@@ -81,6 +84,9 @@ export default StyleSheet.create({
     date: {
         fontSize: 15,
     },
+    modalDate: {
+        fontSize: 14,
+    },
 
     appTitle:{
         color: 'white',
@@ -105,9 +111,23 @@ export default StyleSheet.create({
         marginBottom: 4
     },
 
+    modalTitle: {
+        color: 'rgba(255,255,255, 0.5)',
+        fontSize: 16,
+        // marginLeft: 25,
+        marginBottom: 4
+    },
+
     Question: {
         color: 'white',
         fontSize: 22,
+        // marginLeft: 25,
+        maxWidth: '85%'
+    },
+
+    modalQuestion: {
+        color: 'white',
+        fontSize: 20,
         // marginLeft: 25,
         maxWidth: '85%'
     },
@@ -156,6 +176,12 @@ export default StyleSheet.create({
     username:{
         color: 'rgba(255,255,255, 0.5)',
         fontSize: 15,
+        fontWeight: 'bold'
+    },
+
+    modalUsername:{
+        color: 'rgba(255,255,255, 0.5)',
+        fontSize: 14,
         fontWeight: 'bold'
     },
 
@@ -266,5 +292,77 @@ export default StyleSheet.create({
     tagName:{
         color: 'white',
         fontSize: 15
+    },
+     
+    roomModalView:{
+        backgroundColor: 'rgba(0,0,0,0.2)',
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+     
+    roomModalContainer:{
+        minHeight: '15%',
+        width: '80%',
+        backgroundColor: '#121212',
+        borderRadius: 10,
+        paddingTop: 15,
+        paddingBottom: 15,
+        paddingLeft: 20,
+        paddingRight: 20
+
+    },
+
+    bar:{
+        width: '100%',
+        height: 20,
+        // backgroundColor: 'orange',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+
+    actualBar:{
+        height: 4,
+        width: 35,
+        borderRadius: 5,
+        opacity: 0.6,
+        backgroundColor: 'white'
+    },
+
+    headerForModal:{
+        flexDirection: 'row',
+        justifyContent:'space-between'
+    },
+
+    headerLeft:{
+        // width: '25%',
+        minHeight: 40,
+        // backgroundColor: 'aqua',
+        alignItems: 'center',
+        justifyContent: 'flex-start'
+    },
+
+    longPressedImage:{
+        height: 65,
+        width: 65,
+        borderRadius: 10,
+    },
+
+    headerRight:{
+        width: '72%',
+        minHeight: 40,
+        // backgroundColor: 'orange'
+    },
+
+    
+    modalRoomStats:{
+        paddingTop: 10,
+        paddingBottom: 10,
+    },
+
+    statsList:{
+        fontSize: 16,
+        marginTop: 10,
+        color: 'white',
     }
 })

@@ -2,9 +2,9 @@ import React, {useState, useEffect, useContext, useRef} from 'react';
 import { StyleSheet, Text, View, FlatList, Image, RefreshControl, Pressable, StatusBar, ScrollView, Modal, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
 import styles from '../Styles/FeedStyles'
 import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from "@react-navigation/native";
 import { UserContext } from "../Context/CurrentUser";
+import * as Haptics from 'expo-haptics';
 
 
 // import { useNavigation } from '@react-navigation/native';
@@ -36,6 +36,8 @@ const Feed = ({route,navigation}) => {
   const [answered, setAnswered] = useState(false)
   const [mostPopular, setMostPopular] = useState(false)
   const [modalVisible, setModalVisible] = useState(false);
+  const [roomModalVisible, setRoomModalVisible] = useState(false)
+const [longPressedRoom, setLongPressedRoom] = useState([])
   const [token,setToken] = useState()
   const isFocused = useIsFocused();
 
@@ -43,17 +45,13 @@ const Feed = ({route,navigation}) => {
   useEffect(()=>{ //On page load grab all the rooms
     let isMounted = true;
 
+
     if(isFocused && isMounted){
-      const getData = async () => {
-        try {
-          const token = await AsyncStorage.getItem('session-key')
-          setToken(token)
-          if(token !== null) {
-            console.log("token not null")
+      
             axios({
               method: 'GET',
               url: `https://fishbowl-heroku.herokuapp.com/chat/get`,
-              headers: { "x-auth-token": `${token}` }
+              headers: { "x-auth-token": `${info.token}` }
             }).then((res) => {
                   setAllRooms(res.data.reverse()) //Reversing order of rooms before we set variable, so that newest is at the top
             }).catch((error) => {
@@ -64,7 +62,7 @@ const Feed = ({route,navigation}) => {
             axios({
               method: "GET", //Getting the users the current user follows
               url: `https://fishbowl-heroku.herokuapp.com/users/get/${info.id}`,
-              headers: { "x-auth-token": `${token}` }
+              headers: { "x-auth-token": `${info.token}` }
             }).then((response) => {
                     setFollowing(response.data[0].following)
             }).catch((error) => {
@@ -75,7 +73,7 @@ const Feed = ({route,navigation}) => {
             axios({ //Getting all users on the site
               method: "GET",
               url: `https://fishbowl-heroku.herokuapp.com/users/get`,
-              headers: { "x-auth-token": `${token}` }
+              headers: { "x-auth-token": `${info.token}` }
             }).then((response) => {
                 setUsers(response.data.reverse()) //Setting state with current info
             }).catch((error) => {
@@ -83,14 +81,6 @@ const Feed = ({route,navigation}) => {
     
             })
 
-
-            
-          }
-        } catch(e) {
-          // error reading value
-        }
-      }
-      getData()
     }
       
     return () => { isMounted = false };
@@ -111,7 +101,7 @@ const Feed = ({route,navigation}) => {
     axios({
       method: 'GET',
       url: `https://fishbowl-heroku.herokuapp.com/chat/get`,
-      headers: { "x-auth-token": `${token}` }
+      headers: { "x-auth-token": `${info.token}` }
     }).then((res) => {
           setAllRooms(res.data.reverse()) //Reversing order of rooms before we set variable, so that newest is at the top
     })
@@ -119,7 +109,7 @@ const Feed = ({route,navigation}) => {
     axios({
       method: "GET", //Getting the users the current user follows
       url: `https://fishbowl-heroku.herokuapp.com/users/get/${info.id}`,
-      headers: { "x-auth-token": `${token}` }
+      headers: { "x-auth-token": `${info.token}` }
     }).then((response) => {
             setFollowing(response.data[0].following)
     }).catch((error) => {
@@ -130,27 +120,20 @@ const Feed = ({route,navigation}) => {
     axios({ //Getting all users on the site
       method: "GET",
       url: `https://fishbowl-heroku.herokuapp.com/users/get`,
-      headers: { "x-auth-token": `${token}` }
+      headers: { "x-auth-token": `${info.token}` }
     }).then((response) => {
         setUsers(response.data.reverse()) //Setting state with current info
         setRefreshing(false)
-
     }).catch((error) => {
         console.log('error: ', error);
-
     })
   }
 
+
   const header=()=>{
     return(
-      <>
-      <StatusBar barStyle="dark-content" backgroundColor="#1B1F22" />
-      <View style={styles.header}>
-        <Text style={styles.appTitle}>{days[current_namedDay]}, {months[current_month]} {current_day}th</Text>
-        <Text style={styles.appFeedT}>Daily Feed</Text>
-      </View>
-      <View style={styles.gap}></View>
       <View style={styles.filter}>
+      <View style={styles.gap}></View>
         <TouchableOpacity onPress={()=>setModalVisible(true)}>
           <View style={styles.toggle}>
             <Image style={styles.filterIcon} source={mostRecent? require('../SVG/clock.png'): answered? require('../SVG/checked.png'): mostPopular? require('../SVG/up-trend.png'):null}/>
@@ -159,12 +142,17 @@ const Feed = ({route,navigation}) => {
           </View>
         </TouchableOpacity>
       </View>
-      </>
+      
     )
   }
 
   return(
     <View style={styles.container}>
+      <StatusBar barStyle="dark-content" backgroundColor="#1B1F22" />
+      <View style={styles.header}>
+        <Text style={styles.appTitle}>{days[current_namedDay]}, {months[current_month]} {current_day}th</Text>
+        <Text style={styles.appFeedT}>Daily Feed</Text>
+      </View>
       <View style={styles.list}>
       <FlatList
         data={
@@ -183,18 +171,22 @@ const Feed = ({route,navigation}) => {
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
-            progressViewOffset={-10}
+            progressViewOffset={-5}
             onRefresh={onRefresh}
           />
         }
         renderItem={({item})=> (
-          <Pressable style={styles.room} onPress={()=> navigation.navigate('ChatRoom', {roomId: item._id})}>
+          <Pressable style={styles.room} onPress={()=> navigation.navigate('ChatRoom', {roomId: item._id})} onLongPress={()=> {
+            setLongPressedRoom(item)
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.light);
+            setRoomModalVisible(true)
+          }}>
             <View style={styles.top}>
               <View style={styles.left}>
                 <Image style={styles.image} source={{uri: item.CreatedByImage}}/>
               </View>
               <View style={styles.right}>
-                <Text style={styles.Title}>{item.Title.split(' ').slice(0,3).join(' ')}<Text style={styles.date}> {`· ${current_year === item.Date.year ? current_month === item.Date.month ? current_day === item.Date.day ? current_hour === item.Date.hour ? `<1h` : current_hour - item.Date.hour + `h` : current_day - item.Date.day + `d` : current_month - item.Date.month + `m` : current_year - item.Date.year + `y`}`}</Text></Text>
+                <Text style={styles.Title}>{item.Title.split(' ').slice(0,3).join(' ')}<Text style={styles.date}> {`· ${current_year === item.Date.year ? current_month === item.Date.month ? current_day === item.Date.day ? current_hour === item.Date.hour ? `<1h` : current_hour - item.Date.hour + `h` : current_day - item.Date.day + `d` : `${item.Date.day} ${months[item.Date.month].substring(0,3)}`: current_year - item.Date.year + `y`}`}</Text></Text>
                 <Text style={styles.username}>/{item.CreatedByName}</Text>
                 <Text style={styles.Question}>{item.Question}</Text>
               </View>
@@ -221,7 +213,6 @@ const Feed = ({route,navigation}) => {
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
           setModalVisible(!modalVisible);
         }}
       >
@@ -232,6 +223,9 @@ const Feed = ({route,navigation}) => {
           >
             <TouchableWithoutFeedback>
                 <View style={styles.modalContainer}>
+                  <View style={styles.bar}>
+                    <View style={styles.actualBar}/>
+                  </View>
                   <Text style={styles.sortTxt}>Sort Posts By</Text>
                   <TouchableOpacity style={styles.optionContainer} onPress={()=>{
                     setMostRecent(true)
@@ -264,6 +258,43 @@ const Feed = ({route,navigation}) => {
               </TouchableWithoutFeedback>
           </TouchableOpacity>  
       </Modal>
+      {longPressedRoom.length === 0? (null): (
+        <Modal
+        animationType="fade"
+        transparent={true}
+        visible={roomModalVisible}
+        onRequestClose={() => {
+          setRoomModalVisible(!roomModalVisible);
+        }}
+      >
+        <TouchableOpacity 
+            style={styles.roomModalView} 
+            activeOpacity={1} 
+            onPress={()=>setRoomModalVisible(false)}
+          >
+              <TouchableWithoutFeedback>
+                <View style={styles.roomModalContainer}>
+                  <View style={styles.headerForModal}>
+                    <View style={styles.headerLeft}>
+                      <Image style={styles.longPressedImage} source={{uri: longPressedRoom.CreatedByImage}}/>
+                    </View>
+                    <View style={styles.headerRight}>
+                          <Text style={styles.modalTitle}>{longPressedRoom.Title.split(' ').slice(0,3).join(' ')}<Text style={styles.modalDate}> {`· ${current_year === longPressedRoom.Date.year ? current_month === longPressedRoom.Date.month ? current_day === longPressedRoom.Date.day ? current_hour === longPressedRoom.Date.hour ? `<1h` : current_hour - longPressedRoom.Date.hour + `h` : current_day - longPressedRoom.Date.day + `d` : `${longPressedRoom.Date.day} ${months[longPressedRoom.Date.month].substring(0,3)}`: current_year - longPressedRoom.Date.year + `y`}`}</Text></Text>
+                      <Text style={styles.modalUsername}>/{longPressedRoom.CreatedByName}</Text>
+                      <Text style={styles.modalQuestion}>{longPressedRoom.Question}</Text>
+                    </View>
+                  </View>
+                  <View style={styles.modalRoomStats}>
+                    <Text style={styles.statsList}>Total Messages: {longPressedRoom.Messages.length}</Text>
+                    <Text style={styles.statsList}>Answered: {longPressedRoom.Answered? `True`: `False`}</Text>
+                    <Text style={styles.statsList}>Creation Date: {longPressedRoom.Date.day}th {months[longPressedRoom.Date.month]} {longPressedRoom.Date.year}</Text>
+                  </View>
+                </View>
+              </TouchableWithoutFeedback>
+          </TouchableOpacity>  
+      </Modal>
+      )}
+      
     </View>
   )
 }

@@ -45,15 +45,6 @@ const Login = ({loginToParent}) => {
   const checkUsername = (result) =>{
     setResult(result)
     let passedToken = result.idToken
-    const storeData = async () => {
-      try {
-        if(isMounted){
-          await AsyncStorage.setItem('session-key', passedToken)
-        }
-      } catch (e) {
-      }
-    }
-    storeData()
 
     axios({
       method: "GET",

@@ -38,49 +38,37 @@ const Search = ({navigation}) => {
     let isMounted = true;
 
     if(isFocused && isMounted){
-      const getData = async () => {
-        try {
-          const token = await AsyncStorage.getItem('session-key')
-          setToken(token)
-          if(token !== null) {
-            console.log("token not null")
-            axios({
-              method: 'GET',
-              url: `https://fishbowl-heroku.herokuapp.com/chat/get`,
-              headers: { "x-auth-token": `${token}` }
-            }).then((res) => {
-                  setAllRooms(res.data.reverse()) //Reversing order of rooms before we set variable, so that newest is at the top
-            }).catch((error) => {
-              console.log('error: ', error);
-            })
+        axios({
+          method: 'GET',
+          url: `https://fishbowl-heroku.herokuapp.com/chat/get`,
+          headers: { "x-auth-token": `${info.token}` }
+        }).then((res) => {
+              setAllRooms(res.data.reverse()) //Reversing order of rooms before we set variable, so that newest is at the top
+        }).catch((error) => {
+          console.log('error: ', error);
+        })
 
-            axios({
-              method: "GET", //Getting the users the current user follows
-              url: `https://fishbowl-heroku.herokuapp.com/users/get/${info.id}`,
-              headers: { "x-auth-token": `${token}` }
-            }).then((response) => {
-                    setFollowing(response.data[0].following)
-            }).catch((error) => {
-                console.log('error: ', error);
-        
-            })
-        
-            axios({ //Getting all users on the site
-              method: "GET",
-              url: `https://fishbowl-heroku.herokuapp.com/users/get`,
-              headers: { "x-auth-token": `${token}` }
-            }).then((response) => {
-                setUsers(response.data.reverse()) //Setting state with current info        
-            }).catch((error) => {
-                console.log('error: ', error);
-        
-            })
-          }
-        } catch(e) {
-          // error reading value
-        }
-      }
-      getData()
+        axios({
+          method: "GET", //Getting the users the current user follows
+          url: `https://fishbowl-heroku.herokuapp.com/users/get/${info.id}`,
+          headers: { "x-auth-token": `${info.token}` }
+        }).then((response) => {
+                setFollowing(response.data[0].following)
+        }).catch((error) => {
+            console.log('error: ', error);
+    
+        })
+    
+        axios({ //Getting all users on the site
+          method: "GET",
+          url: `https://fishbowl-heroku.herokuapp.com/users/get`,
+          headers: { "x-auth-token": `${info.token}` }
+        }).then((response) => {
+            setUsers(response.data.reverse()) //Setting state with current info        
+        }).catch((error) => {
+            console.log('error: ', error);
+    
+        })
     }
       
     return () => { isMounted = false };
@@ -113,10 +101,12 @@ const Search = ({navigation}) => {
     axios({
       method: 'GET',
       url: `https://fishbowl-heroku.herokuapp.com/chat/get`,
-      headers: { "x-auth-token": `${token}` }
+      headers: { "x-auth-token": `${info.token}` }
     }).then((res) => {
           setAllRooms(res.data.reverse()) //Reversing order of rooms before we set variable, so that newest is at the top
           setRefreshing(false)
+    }).catch((error) => {
+      console.log('error: ', error);
     })
   }
 
@@ -160,7 +150,7 @@ const Search = ({navigation}) => {
           axios({
               method: 'PUT',
               url: `https://fishbowl-heroku.herokuapp.com/users/update/${info.id}`,
-              headers: { "x-auth-token": `${token}` },
+              headers: { "x-auth-token": `${info.token}` },
               data: { following: userID }
           }).then((res) => {
               getFollowing() //Once a user makes a request update their display
@@ -173,7 +163,7 @@ const Search = ({navigation}) => {
           axios({
               method: 'PUT',
               url: `https://fishbowl-heroku.herokuapp.com/users/update/${info.id}`,
-              headers: { "x-auth-token": `${token}` },
+              headers: { "x-auth-token": `${info.token}` },
               data: { unfollowing: userID }
           }).then((res) => {
               getFollowing() //Once a user makes a request update their display
@@ -189,7 +179,7 @@ const Search = ({navigation}) => {
       axios({
           method: "GET",
           url: `https://fishbowl-heroku.herokuapp.com/users/get/${info.id}`,
-          headers: { "x-auth-token": `${token}` }
+          headers: { "x-auth-token": `${info.token}` }
       }).then((response) => {
           setFollowing(response.data[0].following)
       }).catch((error) => {
