@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native'
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 export default StyleSheet.create({
     container: {
@@ -21,7 +22,7 @@ export default StyleSheet.create({
     userImage:{
         height: 35,
         width: 35,
-        borderRadius: 20,
+        borderRadius: 5,
         marginLeft: 15,
         marginRight: 15
     },
@@ -103,7 +104,7 @@ export default StyleSheet.create({
     },
 
     edit:{
-        height: 45,
+        height: hp('5%'),
         width: '100%',
         backgroundColor: '#212529',
         flexDirection:'row',
@@ -112,8 +113,8 @@ export default StyleSheet.create({
     },
 
     settingsIcon:{
-        height: 25,
-        width: 25,
+        height: 22,
+        width: 22,
         marginRight: 20,
         tintColor: 'white'
     },

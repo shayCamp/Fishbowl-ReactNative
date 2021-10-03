@@ -127,7 +127,7 @@ const Search = ({navigation}) => {
         />
       }
       renderItem={({item})=> (
-        <Pressable style={styles.userHolder} onPress={()=> navigation.navigate('UsersPage', {userID: item._id})}>
+        <Pressable style={styles.userHolder} onPress={()=> navigation.navigate('Profile', {profile: item._id})}>
           <Image style={styles.userImage} source={{uri: item.image}}/>
           <Text style={styles.userTxt}>{item.username}</Text>
           <Pressable style={following.includes(item.username) ? styles.followingBtn : styles.followBtn} onPress={() => requests(item.username, !following.includes(item.username))}>
@@ -196,7 +196,8 @@ const Search = ({navigation}) => {
           <TextInput selectionColor={'white'} style={styles.input} placeholder="Search For Rooms Or Users" placeholderTextColor="rgba(255,255,255, 0.5)" onChangeText={search => setSearchFilter(search)}></TextInput>
         </View>
       </View>
-          <FlatList
+      <View style={styles.list}>
+      <FlatList
         data={
           allRooms.filter((room)=> {
           return(
@@ -249,6 +250,7 @@ const Search = ({navigation}) => {
           </Pressable>
         )}
       />
+      </View>
       </View>
   )
 }

@@ -22,7 +22,13 @@ const Profile = ({route, navigation}) => {
   const [usersRooms, setUsersRooms] = useState([])
   const [token,setToken] = useState()
   const [refreshing, setRefreshing] = useState(false);
-  const [myPage, setMyPage] = useState(route.params.profile === info.id)
+  const [myPage, setMyPage] = useState('')
+
+  useEffect(()=>{
+    if(route.params !== undefined){
+      setMyPage(route.params.profile === info.id)
+    }
+  },[route])
 
   
 
@@ -33,9 +39,9 @@ const Profile = ({route, navigation}) => {
      */
    useEffect(()=>{ //On page load grab all the rooms
     let isMounted = true;
-    // setLoading(true)
+    setLoading(true)
 
-    if(isFocused && isMounted){
+    if(isFocused && isMounted && route.params !== undefined){
         axios({
           method: 'GET',
           url: `https://fishbowl-heroku.herokuapp.com/users/get/${route.params.profile}`,
@@ -56,6 +62,8 @@ const Profile = ({route, navigation}) => {
             console.log(err)
         })
     }
+
+    setLoading(false)
     return () => { isMounted = false };
   },[isFocused])
 /**
@@ -68,7 +76,7 @@ const Profile = ({route, navigation}) => {
   setRefreshing(true);
   axios({
     method: 'GET',
-    url: `https://fishbowl-heroku.herokuapp.com/chat/get/specificUserRoom/${info.id}`,
+    url: `https://fishbowl-heroku.herokuapp.com/chat/get/specificUserRoom/${route.params.profile}`,
     headers: { "x-auth-token": `${info.token}` }
   }).then((res) => {
       setUsersRooms(res.data.reverse())
@@ -80,13 +88,30 @@ const Profile = ({route, navigation}) => {
 
  const header = () =>{
    return(
-    <View style={styles.noRoomContainer}>
-    <Pressable onPress={()=> navigation.navigate('Create Room')}>
-      <View style={styles.noRoomHolder}>
-        <Text style={styles.createRoomText}>You Have No Rooms - Create Some</Text>
-      </View>
-    </Pressable>
-  </View>
+     <>
+    {myPage?(
+      <View style={styles.edit}>
+      <Pressable>
+        <Image style={styles.settingsIcon} source={require('../SVG/settings.png')}/>
+      </Pressable>
+    </View>
+    ): null}
+     
+     <View style={styles.profileImage}>
+       <Image style={styles.image} source={{uri: currentUser.image}}/>
+       <Text style={styles.username}>{currentUser.username}</Text>
+       <Text style={styles.email}>{currentUser.email}</Text>
+     </View>
+     {usersRooms.length ===0?(
+       <View style={styles.noRoomContainer}>
+       <Pressable onPress={()=> navigation.navigate('Create Room')}>
+         <View style={styles.noRoomHolder}>
+           <Text style={styles.createRoomText}>You Have No Rooms - Create Some</Text>
+         </View>
+       </Pressable>
+     </View>
+     ):null}
+  </>
 
    )
  }
@@ -98,22 +123,10 @@ const Profile = ({route, navigation}) => {
           <Text>Loading</Text>
         ):(
           <>
-           {myPage?(
-             <View style={styles.edit}>
-             <Pressable>
-               <Image style={styles.settingsIcon} source={require('../SVG/settings.png')}/>
-             </Pressable>
-           </View>
-           ): null}
-            
-            <View style={styles.profileImage}>
-              <Image style={styles.image} source={{uri: currentUser.image}}/>
-              <Text style={styles.username}>{currentUser.username}</Text>
-              <Text style={styles.email}>{currentUser.email}</Text>
-            </View>
+
               <FlatList
               data={usersRooms}
-              ListHeaderComponent={usersRooms.length === 0? header: null}
+              ListHeaderComponent={header}
               keyExtractor={(item, index) => {
                 return  index.toString();
               }}

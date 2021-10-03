@@ -1,4 +1,5 @@
 import {ScrollView, StyleSheet} from 'react-native'
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 export default StyleSheet.create({
 
@@ -56,6 +57,13 @@ edit: {
     height: 40,
     justifyContent: 'center'
 },
+sendBtn:{
+ width: wp('12%'),
+ height: hp('5%'),
+//  backgroundColor: 'orange',
+ alignItems: 'center',
+ justifyContent: 'center'
+},
 
 imgntxt:{
     width: '70%',
@@ -66,12 +74,61 @@ imgntxt:{
     opacity: 0.8
 },
 
+inputEdit:{
+    minHeight: 50,
+    fontSize: 16,
+    fontWeight: 'bold',
+    width: '90%',
+    borderBottomWidth: 1,
+    color: 'white',
+    marginTop: 15,
+    borderColor: 'rgba(255,255,255,0.5)',
+},
+
+submitBtnHolder:{
+    marginTop: 20,
+    width: '90%',
+    // backgroundColor: 'orange',
+    alignItems: 'flex-end'
+},
+
+submitBtn:{
+    height: 35,
+    width: 110,
+    borderRadius: 5,
+    backgroundColor: '#0096ff',
+    alignItems: 'center',
+    justifyContent: 'center'
+},
+
+saveChangesText:{
+    color: 'white'
+},
+
+roomDetails:{
+    fontSize: 18,
+    color: 'white',
+    opacity: 0.5
+},
 
 
 
 lower:{
     paddingTop: 20,
     flexDirection: 'row',
+    alignItems: 'center',
+    // justifyContent: 'center',
+    paddingBottom: 20,
+    paddingLeft: 15,
+    paddingRight: 15,
+    width: '100%',
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(255, 255, 255, 0.2)',
+},
+
+lowerColumn:{
+    paddingTop: 20,
+    flexDirection: 'column',
     alignItems: 'center',
     // justifyContent: 'center',
     paddingBottom: 20,
@@ -135,8 +192,8 @@ text:{
 
 input:{
     height: '100%',
-    width: '60%',
-    marginRight: 20,
+    width: wp('62%'),
+    // marginRight: 20,
     color: 'white',
     fontSize: 18,
     // backgroundColor: 'red'

@@ -11,7 +11,9 @@ export default StyleSheet.create({
         width: '100%',
         // backgroundColor: 'orange',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        borderBottomWidth: 1,
+        borderColor: 'rgba(255,255,255,0.1)',
     },
 
     userHolder:{
@@ -22,10 +24,10 @@ export default StyleSheet.create({
     },
 
     searchHolder:{
-        height: 40,
-        width: '92%',
+        height: 42,
+        width: '85%',
         backgroundColor: '#111213ff',
-        borderRadius: 10,
+        borderRadius: 20,
         alignItems: 'center',
         flexDirection: 'row'
     },
@@ -50,6 +52,13 @@ export default StyleSheet.create({
         borderRadius: 5,
         alignItems: 'center',
         justifyContent: 'center'
+    },
+
+    list:{
+        // backgroundColor: '#212529',
+        // backgroundColor: 'orange',
+        width: '100%',
+        marginBottom: 60,
     },
 
     followingBtn:{

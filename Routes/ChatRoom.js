@@ -29,9 +29,13 @@ const ChatRoom = ({route, navigation}) =>{
     const { v4: uuidv4 } = require('uuid');
     const [message, setMessage] = useState('')
     const [token,setToken] = useState('')
+    const [editedQuestion, setEditedQuestion] = useState("")
+    const [editedTitle, setEditedTitle] = useState("")
     const [room, setRoom] = useState([])
     const [answered, setAnswered] = useState()
     const [settingsVisible, setSettingsVisible] = useState(false)
+    const [roomTitle, setRoomTitle] = useState('')
+    const [roomQuestion, setRoomQuestion] = useState('')
 
 
     useEffect(()=>{
@@ -43,6 +47,8 @@ const ChatRoom = ({route, navigation}) =>{
             }).then((res) => {
                 if(isMounted){
                     setRoom(res.data[0]);
+                    setRoomTitle(res.data[0].Title)
+                    setRoomQuestion(res.data[0].Question)
                     setAnswered(res.data[0].Answered)
                     setRoomSavedMsgs(res.data[0].Messages);
                 }
@@ -151,11 +157,65 @@ const ChatRoom = ({route, navigation}) =>{
         })
     }
 
+
     /**
      * ========================================
      * Redirect to user through comment section
      * ========================================
      */
+
+     const updateQuestion = () => {
+         console.log("updating  q   ")
+
+        if (editedQuestion.length > 0 && editedTitle.length > 0) {
+            setRoomTitle(editedTitle)
+            setRoomQuestion(editedQuestion)
+            setSettingsVisible(false)
+
+
+            axios({
+                method: `PUT`,
+                url: `https://fishbowl-heroku.herokuapp.com/chat/update/${room._id}`,
+                headers: { "x-auth-token": `${info.token}` },
+                data: {Question: editedQuestion, Title: editedTitle }
+            }).then((res) => {
+                setEditedQuestion('')
+                setEditedTitle('')
+            }).catch((error) => {
+                console.log("error", error)
+            })
+        }else if(editedTitle.length > 0 && !editedQuestion.length > 0){
+            setRoomTitle(editedTitle)
+            setSettingsVisible(false)
+
+            axios({
+                method: `PUT`,
+                url: `https://fishbowl-heroku.herokuapp.com/chat/update/${room._id}`,
+                headers: { "x-auth-token": `${info.token}` },
+                data: {Title: editedTitle }
+            }).then((res) => {
+                setEditedTitle('')
+            }).catch((error) => {
+                console.log("error", error)
+            })
+        }else if(!editedTitle.length > 0 && editedQuestion.length > 0){
+            setRoomQuestion(editedQuestion)
+            setSettingsVisible(false)
+
+
+            axios({
+                method: `PUT`,
+                url: `https://fishbowl-heroku.herokuapp.com/chat/update/${room._id}`,
+                headers: { "x-auth-token": `${info.token}` },
+                data: {Question: editedQuestion}
+            }).then((res) => {
+                setEditedQuestion('')
+            }).catch((error) => {
+                console.log("error", error)
+            })
+        }
+    }
+
 
     
 
@@ -176,24 +236,41 @@ const ChatRoom = ({route, navigation}) =>{
                     </View>
                 </Pressable>
                 <View style={styles.imgntxt}>
-                    <Text style={styles.text}>{settingsVisible?`Settings`:room.Title}</Text>
+                    <Text style={styles.text}>{settingsVisible?`Settings`:roomTitle}</Text>
                 </View>
-                <Pressable style={styles.edit} onPress={()=> setSettingsVisible(!settingsVisible)}>
-                    {room.CreatedByName === info.name?(
-                        <Image style={styles.settingsIcon} source={require('../SVG/settings.png')}/>
-                    ):null}
-                </Pressable>
+                {room.CreatedByName === info.name?(
+                    <Pressable style={styles.edit} onPress={()=> setSettingsVisible(!settingsVisible)}>
+                    <Image style={styles.settingsIcon} source={require('../SVG/settings.png')}/>
+                
+                    </Pressable>
+                ):(
+                    <View style={styles.edit}/>
+                )}
+                
             </View>
-            <ScrollView style={styles.ScrollView}>
-                <View style={styles.lower}>
-                    {settingsVisible? <Text>Edit Room and stuff</Text>: (
+            <ScrollView style={styles.ScrollView} keyboardShouldPersistTaps={'handled'}>
+                <View style={settingsVisible? styles.lowerColumn :styles.lower}>
+                    {settingsVisible? (
+                        <>
+                            <Text style={styles.roomDetails}>Room Details</Text>
+                            <TextInput placeholder={`Change Title: "${room.Title}"`} placeholderTextColor='rgba(255,255,255,0.5)' multiline={true} selectionColor={'rgba(255,255,255,0.3)'} maxLength={300} value={editedTitle} style={styles.inputEdit} onChangeText={(t)=>setEditedTitle(t)}></TextInput>
+                            <TextInput maxLength={1000} placeholder={`Change Question: "${room.Question}"`} placeholderTextColor='rgba(255,255,255,0.5)' multiline={true} selectionColor={'rgba(255,255,255,0.3)'} value={editedQuestion} style={styles.inputEdit} onChangeText={(q)=>setEditedQuestion(q)}></TextInput>
+                            {editedQuestion.length > 0 || editedTitle.length > 0?(
+                                <View style={styles.submitBtnHolder}>
+                                    <Pressable onPress={()=>updateQuestion()} style={styles.submitBtn} >
+                                        <Text style={styles.saveChangesText}>Save Changes</Text>
+                                    </Pressable>
+                                </View>
+                            ):null}
+                        </>
+                    ): (
                         <>
                             <View style={styles.left}>
                                 <Image style={styles.image} source={{uri: room.CreatedByImage}}/>
                             </View>
                             <View style={styles.right}>
                                 <Text style={styles.Otext}>{room.CreatedByName}</Text>
-                                <Text style={styles.Qtext}>{room.Question}</Text>
+                                <Text style={styles.Qtext}>{roomQuestion}</Text>
                             </View>
                         </>
                     )}
@@ -238,7 +315,7 @@ const ChatRoom = ({route, navigation}) =>{
                 <Image style={styles.imageChatbar} source={{uri: info.image}}/>
                 <TextInput style={styles.input} selectionColor={'white'} placeholder={'Message'} value={newMessage} placeholderTextColor="white" onChangeText={message => setNewMessage(message)}/>
                 {newMessage.length !== 0? (
-                    <Pressable onPress={handleSendMessage}>
+                    <Pressable onPress={handleSendMessage} style={styles.sendBtn}>
                     <Image
                     source={require('../SVG/sendF.png')}
                     resizeMode='contain'

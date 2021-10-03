@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native'
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 export default StyleSheet.create({
     container: {
@@ -11,7 +12,7 @@ export default StyleSheet.create({
     header:{
         width: '100%',
         backgroundColor: '#1B1F22',
-        height: 120,
+        height: hp('14%'),
         justifyContent: 'center',
         zIndex: 400
     },
@@ -22,7 +23,14 @@ export default StyleSheet.create({
         // backgroundColor: '#212529',
         // backgroundColor: 'orange',
         width: '100%',
-        marginBottom: 120
+        marginBottom: 110,
+    },
+
+    tagsHolder:{
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        paddingTop: 20,
+        paddingBottom: 5
     },
 
     gap:{
@@ -48,8 +56,7 @@ export default StyleSheet.create({
     },
 
     filterText:{
-        fontSize: 16,
-        fontWeight: 'bold',
+        fontSize: 17,
         color: 'white',
         opacity: 0.8,
         marginRight: 15
@@ -186,6 +193,7 @@ export default StyleSheet.create({
     },
 
     filter:{
+        height: hp('8%')
         // backgroundColor: 'orange',
     },
 
@@ -247,20 +255,31 @@ export default StyleSheet.create({
         color: 'white'
     },
 
-    tagHolder: {
+    tagsHolder: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        paddingBottom: 20
+        // backgroundColor: 'orange',
+        paddingTop: 10
+        // paddingBottom: 20
+    },
+
+    tagText:{
+        color: 'white',
+        fontSize: 16,
+        opacity: 0.8
     },
 
     tag:{
+        height: 32,
+        padding: 12,
+        borderRadius: 5,
+        backgroundColor: '#111213ff',
+        alignItems:'center',
         justifyContent: 'center',
-        alignItems: 'center',
-        height: 30,
-        width: 110,
-        // marginLeft: 15,
-        borderRadius: 15,
-        backgroundColor: '#384357',
+        marginTop: 5,
+        marginRight: 5,
+        marginBottom: 10,
+        minWidth: 40
     },
 
     answeredHolder:{

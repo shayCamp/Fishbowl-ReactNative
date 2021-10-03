@@ -13,8 +13,6 @@ import CreateRoom from './Routes/CreateRoom.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ChatRoom from './Routes/ChatRoom.js';
 import { UserContext } from "./Context/CurrentUser";
-import UsersPage from './Routes/UsersPage.js';
-
 
 
 
@@ -28,6 +26,7 @@ const MyTheme = {
   colors: {
     // #111213ff
     background: '#1B1F22',
+    card: '#121212',
     card: '#1B1F22',
     text: 'rgb(28, 28, 30)',
     border: 'none',
@@ -48,10 +47,30 @@ function TabNavigator({navigation}) {
 
     return (
       <>
+      
         <Tab.Navigator screenOptions={{
           "headerShown":false,
           "tabBarShowLabel": false,
-          "tabBarStyle": {borderTopWidth: 0}
+          "tabBarStyle": {
+            borderTopWidth: 0,
+            // position: 'absolute',
+            // bottom: 20,
+            // left: 15,
+            // right: 15,
+            // elevation: 0,
+            // backgroundColor: '#121212',
+            // borderRadius: 15,
+            height: 60,
+            // shadowColor: "#000",
+            // shadowOffset: {
+            //   width: 0,
+            //   height: 9,
+            // },
+            // shadowOpacity: 0.50,
+            // shadowRadius: 12.35,
+
+            // elevation: 19,
+          }
         }}>
           <Tab.Screen name="FeedNavigator" component={Feed} options={{
             tabBarIcon: ({focused}) => (
@@ -147,7 +166,6 @@ const App = () => {
         <MainApp.Navigator screenOptions={{"headerShown":false}}>
           <MainApp.Screen name="Feed" component={TabNavigator} />
           <MainApp.Screen name="ChatRoom" component={ChatRoom} />
-          <MainApp.Screen name="UsersPage" component={UsersPage} />
         </MainApp.Navigator>
         </UserContext.Provider>
       </NavigationContainer>
@@ -165,5 +183,7 @@ const App = () => {
   }
 
 }
+
+
 
 export default App;
