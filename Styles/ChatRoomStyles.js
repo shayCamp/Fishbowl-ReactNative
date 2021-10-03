@@ -8,6 +8,7 @@ container: {
     // backgroundColor: '#111213ff',
 },
 
+
 chatBar: {
     height: 60,
     width: '100%',
@@ -207,6 +208,22 @@ replyHolder:{
     marginTop: 6,
     backgroundColor: '#212529',
     // alignItems: 'center'
+},
+
+deleteBox:{
+    width: 100,
+    marginTop: 6,
+    backgroundColor: '#fd4d4d',
+    alignItems: 'center',
+    justifyContent: 'center'
+},
+
+helpedBox:{
+    width: 140,
+    marginTop: 6,
+    backgroundColor: '#0096ff',
+    alignItems: 'center',
+    justifyContent: 'center'
 },
 
 top:{

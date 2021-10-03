@@ -1,9 +1,10 @@
 import React, {useState, useEffect, useContext} from 'react';
-import { StyleSheet, Text, View,Image, FlatList, TextInput, StatusBar, Pressable, ScrollView} from 'react-native';
+import { StyleSheet, Text, View,Image, FlatList, TextInput, StatusBar, Pressable, ScrollView,} from 'react-native';
 import { useIsFocused } from "@react-navigation/native";
 import styles from '../Styles/ChatRoomStyles'
 import useChat from './UseChat'
 import { UserContext } from "../Context/CurrentUser";
+import { Swipeable } from 'react-native-gesture-handler';
 import axios from 'axios';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -65,8 +66,10 @@ const ChatRoom = ({route, navigation}) =>{
      */
      const {roomId} = route.params
     const { messages, sendMessage } = useChat(roomId); //Passing in the room ID into my useChat function which is within another component
+    console.log('messages: ', messages);
     const [newMessage, setNewMessage] = useState('') //This stores a message that has currently been typed by a user and submitted
     const [roomSavedMsgs, setRoomSavedMsgs] = useState([])
+    console.log('roomSavedMsgs: ', roomSavedMsgs);
 
     /**
      * =======
@@ -216,7 +219,58 @@ const ChatRoom = ({route, navigation}) =>{
         }
     }
 
+    const header =() =>{
+        return(
+            <View style={settingsVisible? styles.lowerColumn :styles.lower}>
+                    {settingsVisible? (
+                        <>
+                            <Text style={styles.roomDetails}>Room Details</Text>
+                            <TextInput placeholder={`Change Title: "${room.Title}"`} placeholderTextColor='rgba(255,255,255,0.5)' multiline={true} selectionColor={'rgba(255,255,255,0.3)'} maxLength={300} value={editedTitle} style={styles.inputEdit} onChangeText={(t)=>setEditedTitle(t)}></TextInput>
+                            <TextInput maxLength={1000} placeholder={`Change Question: "${room.Question}"`} placeholderTextColor='rgba(255,255,255,0.5)' multiline={true} selectionColor={'rgba(255,255,255,0.3)'} value={editedQuestion} style={styles.inputEdit} onChangeText={(q)=>setEditedQuestion(q)}></TextInput>
+                            {editedQuestion.length > 0 || editedTitle.length > 0?(
+                                <View style={styles.submitBtnHolder}>
+                                    <Pressable onPress={()=>updateQuestion()} style={styles.submitBtn} >
+                                        <Text style={styles.saveChangesText}>Save Changes</Text>
+                                    </Pressable>
+                                </View>
+                            ):null}
+                        </>
+                    ): (
+                        <>
+                            <View style={styles.left}>
+                                <Image style={styles.image} source={{uri: room.CreatedByImage}}/>
+                            </View>
+                            <View style={styles.right}>
+                                <Text style={styles.Otext}>{room.CreatedByName}</Text>
+                                <Text style={styles.Qtext}>{roomQuestion}</Text>
+                            </View>
+                        </>
+                    )}
+                </View>
+        )
+    }
 
+
+    const rightSwipe = () =>{
+        return(
+            <View style={styles.deleteBox}>
+                <Text>Delete</Text>
+            </View>
+        )
+    }
+
+    const leftSwipe = () =>{
+        return(
+            <View style={styles.helpedBox}>
+                <Text>Mark as helped</Text>
+            </View>
+        )
+    }
+
+    const array = [
+        ...messages,
+        ...roomSavedMsgs
+      ]
     
 
     return(
@@ -248,35 +302,33 @@ const ChatRoom = ({route, navigation}) =>{
                 )}
                 
             </View>
-            <ScrollView style={styles.ScrollView} keyboardShouldPersistTaps={'handled'}>
-                <View style={settingsVisible? styles.lowerColumn :styles.lower}>
-                    {settingsVisible? (
-                        <>
-                            <Text style={styles.roomDetails}>Room Details</Text>
-                            <TextInput placeholder={`Change Title: "${room.Title}"`} placeholderTextColor='rgba(255,255,255,0.5)' multiline={true} selectionColor={'rgba(255,255,255,0.3)'} maxLength={300} value={editedTitle} style={styles.inputEdit} onChangeText={(t)=>setEditedTitle(t)}></TextInput>
-                            <TextInput maxLength={1000} placeholder={`Change Question: "${room.Question}"`} placeholderTextColor='rgba(255,255,255,0.5)' multiline={true} selectionColor={'rgba(255,255,255,0.3)'} value={editedQuestion} style={styles.inputEdit} onChangeText={(q)=>setEditedQuestion(q)}></TextInput>
-                            {editedQuestion.length > 0 || editedTitle.length > 0?(
-                                <View style={styles.submitBtnHolder}>
-                                    <Pressable onPress={()=>updateQuestion()} style={styles.submitBtn} >
-                                        <Text style={styles.saveChangesText}>Save Changes</Text>
-                                    </Pressable>
-                                </View>
-                            ):null}
-                        </>
-                    ): (
-                        <>
-                            <View style={styles.left}>
-                                <Image style={styles.image} source={{uri: room.CreatedByImage}}/>
+                <FlatList 
+                data={array}
+                ListHeaderComponent={header}
+                keyExtractor={(item, index) => {
+                    return  index.toString();
+                   }}
+                renderItem={({item})=>(
+                    <Swipeable renderRightActions={rightSwipe} renderLeftActions={leftSwipe}>
+                        <View style={styles.replyHolder}>
+                            <View style={styles.top}>
+                                <Pressable style={styles.userToClick} onPress={() => redirectToUser(item.sentByID)}>
+                                    <Image style={styles.userImage} source={{uri: item.sentByImage}}/>
+                                    <Text style={styles.textProfile}>{item.sentByName}</Text>
+                                    <Text style={styles.textDate}>{`· ${current_year === item.date.year ? current_month === item.date.month ? current_day === item.date.day ? current_hour === item.date.hour ? `<1h` : current_hour - item.date.hour + `h` : current_day - item.date.day + `d` : `${saveditem.date.day} ${months[saveditem.date.month].substring(0,3)}` : current_year - item.date.year + `y`}`}</Text>
+                                </Pressable>
                             </View>
-                            <View style={styles.right}>
-                                <Text style={styles.Otext}>{room.CreatedByName}</Text>
-                                <Text style={styles.Qtext}>{roomQuestion}</Text>
+                            <View style={styles.middle}>
+                                <Text style={styles.replyText}>{item.text}</Text>
                             </View>
-                        </>
-                    )}
-                </View>
+                            <View style={styles.bottom}>
+                            </View>
+                        </View>
+                    </Swipeable>
+                )}/>
+                
                 {/* {settingsVisible?<Text>Edit Rooms an</Text>: } */}
-                {messages.slice(0).reverse().map((message, i)=>(
+                {/* {messages.slice(0).reverse().map((message, i)=>(
                     <View style={styles.replyHolder} key={i}>
                     <View style={styles.top}>
                         <Pressable style={styles.userToClick} onPress={() => redirectToUser(message.sentByID)}>
@@ -308,9 +360,8 @@ const ChatRoom = ({route, navigation}) =>{
                         <View style={styles.bottom}>
                         </View>
                     </View>
-                ))}
+                ))} */}
                 
-            </ScrollView>
             <View style={styles.chatBar}>
                 <Image style={styles.imageChatbar} source={{uri: info.image}}/>
                 <TextInput style={styles.input} selectionColor={'white'} placeholder={'Message'} value={newMessage} placeholderTextColor="white" onChangeText={message => setNewMessage(message)}/>
