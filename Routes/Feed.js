@@ -133,7 +133,6 @@ const [longPressedRoom, setLongPressedRoom] = useState([])
   const header=()=>{
     return(
       <View style={styles.filter}>
-        <View style={styles.gap}></View>
         <TouchableOpacity onPress={()=>setModalVisible(true)}>
           <View style={styles.toggle}>
             <Image style={styles.filterIcon} source={mostRecent? require('../SVG/clock.png'): answered? require('../SVG/checked.png'): mostPopular? require('../SVG/up-trend.png'):null}/>
@@ -148,7 +147,7 @@ const [longPressedRoom, setLongPressedRoom] = useState([])
 
   return(
     <View style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="#1B1F22" />
+      <StatusBar barStyle="light-content" backgroundColor="#181818" />
       <View style={styles.header}>
         <Text style={styles.appTitle}>{days[current_namedDay]}, {months[current_month]} {current_day}{current_day === 1 || current_day > 20 && current_day.toString()[1] === '1'? `st`: current_day===2 || current_day > 20 && current_day.toString()[1] === '2'? `nd`: current_day === 3 || current_day.toString()[1] === '3'? `rd`: current_day >3 || current_day.toString()[1] === '3'? `th`:null}</Text>
         <Text style={styles.appFeedT}>Daily Feed</Text>
@@ -191,13 +190,6 @@ const [longPressedRoom, setLongPressedRoom] = useState([])
                 <Text style={styles.Question}>{item.Question}</Text>
               </View>
             </View>
-            {item.Answered?(
-              <View style={styles.answeredHolder}>
-                <View style={styles.block}>
-                  <Text style={styles.answeredText}>Answered</Text>
-                </View>
-              </View>
-            ):null}
             {item.Tags.length !== 0?(
               <View style={styles.tagsHolder}>
                 {item.Tags.map((tag, i)=>(
@@ -207,12 +199,13 @@ const [longPressedRoom, setLongPressedRoom] = useState([])
                 ))}
               </View>
             ): null}
-            <Text style={styles.border}ellipsizeMode="clip" numberOfLines={1}>
-              - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-              - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-              - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-              - - - - - - - - - - - - - - - - -
-            </Text>
+            {item.Answered?(
+              <View style={styles.answeredHolder}>
+                <View style={styles.block}>
+                  <Text style={styles.answeredText}>Answered</Text>
+                </View>
+              </View>
+            ):null}
           </Pressable>
         )}
       />

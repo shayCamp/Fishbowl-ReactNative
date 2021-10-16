@@ -20,7 +20,7 @@ const Search = ({navigation}) => {
   const isFocused = useIsFocused();
   const [following, setFollowing] = useState([]) //Array of the users the current user is following
   const [users,setUsers] = useState([])
-  console.log('users: ', users);
+  // console.log('users: ', users);
   const [searchFilter, setSearchFilter] = useState('')
   let current_date = new Date()
   let current_year = current_date.getFullYear()
@@ -241,12 +241,12 @@ const Search = ({navigation}) => {
                 </View>
               </View>
             ):null}
-            <Text style={feedStyles.border}ellipsizeMode="clip" numberOfLines={1}>
+            {/* <Text style={feedStyles.border}ellipsizeMode="clip" numberOfLines={1}>
               - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
               - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
               - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
               - - - - - - - - - - - - - - - - -
-            </Text>
+            </Text> */}
           </Pressable>
         )}
       />

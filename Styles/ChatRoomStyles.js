@@ -13,7 +13,7 @@ chatBar: {
     height: 60,
     width: '100%',
     alignItems:'center',
-    backgroundColor: '#212529',
+    backgroundColor: '#191919',
     flexDirection: 'row',
     marginTop: 6
 },
@@ -21,13 +21,10 @@ chatBar: {
 navHeader: {
     width: '100%',
     flexDirection: 'column',
-    // backgroundColor: 'orange',
-    // borderBottomWidth: 1,
-    // borderBottomColor: 'rgba(255, 255, 255, 0.2)',
+    backgroundColor: '#181818',
     paddingTop: 15,
     flexDirection: 'row',
     alignItems: 'center',
-    // justifyContent: 'space-between',
     paddingBottom: 10,
 },
 
@@ -79,7 +76,7 @@ inputEdit:{
     minHeight: 50,
     fontSize: 16,
     fontWeight: 'bold',
-    width: '90%',
+    width: '95%',
     borderBottomWidth: 1,
     color: 'white',
     marginTop: 15,
@@ -118,13 +115,13 @@ lower:{
     paddingTop: 20,
     flexDirection: 'row',
     alignItems: 'center',
-    // justifyContent: 'center',
+    backgroundColor: '#181818',
     paddingBottom: 20,
     paddingLeft: 15,
     paddingRight: 15,
     width: '100%',
     borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255, 255, 255, 0.2)',
+    borderBottomColor: 'rgba(0, 0, 0, 0.1)',
 },
 
 lowerColumn:{
@@ -136,6 +133,7 @@ lowerColumn:{
     paddingLeft: 15,
     paddingRight: 15,
     width: '100%',
+    backgroundColor: '#181818',
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(255, 255, 255, 0.2)',
 },
@@ -205,14 +203,16 @@ input:{
 replyHolder:{
     minHeight: 80,
     width: '100%',
-    marginTop: 6,
-    backgroundColor: '#212529',
-    // alignItems: 'center'
+    marginTop: 10,
+    paddingTop: 10,
+    backgroundColor: '#181818',
+    borderBottomWidth: 1,
+    borderColor: 'rgba(0,0,0,0.5)',
 },
 
 deleteBox:{
     width: 100,
-    marginTop: 6,
+    marginTop: 10,
     backgroundColor: '#fd4d4d',
     alignItems: 'center',
     justifyContent: 'center'
@@ -220,7 +220,7 @@ deleteBox:{
 
 helpedBox:{
     width: 140,
-    marginTop: 6,
+    marginTop: 10,
     backgroundColor: '#0096ff',
     alignItems: 'center',
     justifyContent: 'center'

@@ -25,9 +25,9 @@ const MyTheme = {
   dark: true,
   colors: {
     // #111213ff
-    background: '#1B1F22',
-    card: '#121212',
-    card: '#1B1F22',
+    // background: '#1B1F22',
+    background: '#121212',
+    card: '#191919',
     text: 'rgb(28, 28, 30)',
     border: 'none',
     notification: 'rgb(255, 69, 58)',

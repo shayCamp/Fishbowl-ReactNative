@@ -11,9 +11,12 @@ export default StyleSheet.create({
 
     header:{
         width: '100%',
-        backgroundColor: '#1B1F22',
+        backgroundColor: '#171717',
         height: hp('14%'),
         justifyContent: 'center',
+        borderBottomWidth: 1,
+        borderColor: 'rgba(0,0,0,0.5)',
+        marginBottom: 10,
         zIndex: 400
     },
 
@@ -127,9 +130,9 @@ export default StyleSheet.create({
 
     Question: {
         color: 'white',
-        fontSize: 22,
+        fontSize: 20,
         // marginLeft: 25,
-        maxWidth: '85%'
+        maxWidth: '85%',
     },
 
     modalQuestion: {
@@ -172,7 +175,7 @@ export default StyleSheet.create({
 
     modalContainer:{
         height: '40%',
-        backgroundColor: '#303030',
+        backgroundColor: '#212121',
         flexDirection: 'column',
         alignItems: 'center',
         marginTop: 'auto',
@@ -193,8 +196,8 @@ export default StyleSheet.create({
     },
 
     filter:{
-        height: hp('8%')
-        // backgroundColor: 'orange',
+        height: hp('8%'),
+        backgroundColor: '#171717',
     },
 
 
@@ -213,11 +216,17 @@ export default StyleSheet.create({
     },
 
     room:{
-        width: '90%',
+        width: '100%',
+        paddingLeft: 15,
+        paddingRight: 15,
         paddingTop: 20, 
+        paddingBottom: 15,
         marginLeft: 'auto',
         marginRight: 'auto',
-
+        marginBottom: 10,
+        borderBottomWidth: 1,
+        borderColor: 'rgba(0,0,0,0.5)',
+        backgroundColor: '#171717'
     },
 
     top:{
@@ -322,8 +331,8 @@ export default StyleSheet.create({
      
     roomModalContainer:{
         minHeight: '15%',
-        width: '80%',
-        backgroundColor: '#121212',
+        width: '90%',
+        backgroundColor: '#212121',
         borderRadius: 10,
         paddingTop: 15,
         paddingBottom: 15,

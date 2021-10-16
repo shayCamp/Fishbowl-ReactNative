@@ -14,7 +14,7 @@ import axios from 'axios';
 
 
 const Profile = ({route, navigation}) => {
-  console.log('route: ', route.params);
+  // console.log('route: ', route.params);
   const info = useContext(UserContext)
   const isFocused = useIsFocused();
   const [currentUser, setCurrentUser] = useState('')
@@ -92,7 +92,7 @@ const Profile = ({route, navigation}) => {
     {myPage?(
       <View style={styles.edit}>
       <Pressable>
-        <Image style={styles.settingsIcon} source={require('../SVG/settings.png')}/>
+        {/* <Image style={styles.settingsIcon} source={require('../SVG/settings.png')}/> */}
       </Pressable>
     </View>
     ): null}

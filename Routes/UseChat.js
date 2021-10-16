@@ -26,26 +26,16 @@ const info = useContext(UserContext)
   
       // Listens for incoming messages
       socketRef.current.on(NEW_CHAT_MESSAGE_EVENT, (message) => { //Socket starts to listen for a new message event, it takes this message as a prop and sets it as incoming message
-        const incomingMessage = {
-          ...message,
-          ownedByCurrentUser: message.senderId === socketRef.current.id,
-        };
+        console.log('message: ', message);
+
   
-        // console.log(incomingMessage)
 
         //Conditionally, deleting, clearing or marking as helped current messages.
   
-        if(incomingMessage.text[0] === "delete"){
-          setMessages(messages.filter(item => item !== incomingMessage.text[1]))
-        }else if(incomingMessage.text === "clear"){
-          setMessages("refresh");
-          setMessages([])
-        }else if(incomingMessage.text[0] === "helped"){
-          setMessages("refresh");
-          setMessages([])
-        }
-        else{
-          setMessages((messages) => [...messages, incomingMessage]);
+        if(message.text === "delete"){
+          setMessages(messages.filter(item => item.messageID !== message.messageID))
+        }else{
+          setMessages((messages) => [...messages, message]);
         }
 
         //Conditionally, deleting, clearing or marking as helped current messages.
@@ -60,12 +50,13 @@ const info = useContext(UserContext)
   }, [roomId]);
 
   
-  const sendMessage = (messageBody) => { //Message is sent to server then it is passed to all the users in the same room
+  const sendMessage = (props) => { //Message is sent to server then it is passed to all the users in the same room
     var currentdate = new Date();
     socketRef.current.emit(NEW_CHAT_MESSAGE_EVENT, { //Emitting to the server
-      text: messageBody,
+      text: props[0],
       senderId: socketRef.current.id,
       sentByID: info.id,
+      messageID: props[1],
       sentByName: info.name,
       sentByImage: info.image,
       date: { year: currentdate.getFullYear(), month: currentdate.getMonth(), day: currentdate.getDate(), hour: currentdate.getHours() },

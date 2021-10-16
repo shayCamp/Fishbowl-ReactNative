@@ -9,11 +9,12 @@ export default StyleSheet.create({
     header:{
         height: 80,
         width: '100%',
-        // backgroundColor: 'orange',
+        backgroundColor: '#181818',
         alignItems: 'center',
         justifyContent: 'center',
         borderBottomWidth: 1,
-        borderColor: 'rgba(255,255,255,0.1)',
+        marginBottom:10,
+        borderColor: 'rgba(0,0,0,0.5)',
     },
 
     userHolder:{
@@ -26,8 +27,8 @@ export default StyleSheet.create({
     searchHolder:{
         height: 42,
         width: '85%',
-        backgroundColor: '#111213ff',
-        borderRadius: 20,
+        // backgroundColor: '#181818',
+        borderRadius: 10,
         alignItems: 'center',
         flexDirection: 'row'
     },

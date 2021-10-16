@@ -106,7 +106,7 @@ export default StyleSheet.create({
     edit:{
         height: hp('5%'),
         width: '100%',
-        backgroundColor: '#212529',
+        backgroundColor: '#181818',
         flexDirection:'row',
         justifyContent: 'flex-end',
         alignItems: 'center'
@@ -123,11 +123,13 @@ export default StyleSheet.create({
     profileImage:{
         height: 200,
         width: '100%',
-        backgroundColor: '#212529',
+        backgroundColor: '#181818',
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-
+        paddingBottom: 20,
+        borderBottomWidth: 1,
+        borderColor: 'rgba(0,0,0,0.5)',
     },
 
     username:{

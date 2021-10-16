@@ -66,10 +66,8 @@ const ChatRoom = ({route, navigation}) =>{
      */
      const {roomId} = route.params
     const { messages, sendMessage } = useChat(roomId); //Passing in the room ID into my useChat function which is within another component
-    console.log('messages: ', messages);
     const [newMessage, setNewMessage] = useState('') //This stores a message that has currently been typed by a user and submitted
     const [roomSavedMsgs, setRoomSavedMsgs] = useState([])
-    console.log('roomSavedMsgs: ', roomSavedMsgs);
 
     /**
      * =======
@@ -101,13 +99,14 @@ const ChatRoom = ({route, navigation}) =>{
         if(Array.isArray(props)){ //If the message is either delete or helped then they have a seperate meaning
             if(props[0] === "delete"){
                 sendMessage(props)
-            }else if(props[0] === "clear" || props[0] == "helped"){
-                sendMessage("clear")
+                setTimeout(refreshComments, 100);
             }
         }else{
             if (newMessage.length !== 0) { //Validating that new message is not empty
+                const messageID = uuidv4()
 
-                sendMessage(newMessage); //Passing message into seperate function from other component
+
+                sendMessage([newMessage, messageID]); //Passing message into seperate function from other component
                 setNewMessage(""); //Clearing new message because it has already been sent
 
                 const data = { //Creating an object for the current message sent
@@ -115,9 +114,9 @@ const ChatRoom = ({route, navigation}) =>{
                     sentByID: info.id,
                     sentByName: info.name,
                     sentByImage: info.image,
+                    messageID: messageID,
                     date: { year: current_date.getFullYear(), month: current_date.getMonth(), day: current_date.getDate(), hour: current_date.getHours() },
                     likes: [],
-                    messageID: uuidv4(),
                     helped: false
                 }
     
@@ -168,7 +167,6 @@ const ChatRoom = ({route, navigation}) =>{
      */
 
      const updateQuestion = () => {
-         console.log("updating  q   ")
 
         if (editedQuestion.length > 0 && editedTitle.length > 0) {
             setRoomTitle(editedTitle)
@@ -241,7 +239,7 @@ const ChatRoom = ({route, navigation}) =>{
                                 <Image style={styles.image} source={{uri: room.CreatedByImage}}/>
                             </View>
                             <View style={styles.right}>
-                                <Text style={styles.Otext}>{room.CreatedByName}</Text>
+                                <Text style={styles.Otext}>{room.CreatedByName} - Question:</Text>
                                 <Text style={styles.Qtext}>{roomQuestion}</Text>
                             </View>
                         </>
@@ -251,26 +249,58 @@ const ChatRoom = ({route, navigation}) =>{
     }
 
 
-    const rightSwipe = () =>{
+    const rightSwipe = (id) =>{
         return(
-            <View style={styles.deleteBox}>
+            <Pressable style={styles.deleteBox} onPress={()=>deleteComment(id)}>
                 <Text>Delete</Text>
-            </View>
+            </Pressable>
         )
     }
 
-    const leftSwipe = () =>{
+    const leftSwipe = (id) =>{
         return(
-            <View style={styles.helpedBox}>
+            <Pressable style={styles.helpedBox} >
                 <Text>Mark as helped</Text>
-            </View>
+            </Pressable>
         )
     }
 
     const array = [
-        ...messages,
-        ...roomSavedMsgs
-      ]
+        ...messages.slice(0).reverse(),
+        ...roomSavedMsgs.slice(0).reverse()
+    ]
+
+    const deleteComment = (id) =>{ 
+        
+        //Delete the comment from database whenever clicked
+        axios({
+            method: 'PUT',
+            url: `https://fishbowl-heroku.herokuapp.com/chat/update/${room._id}`,
+            headers: { "x-auth-token": `${info.token}` },
+            data: { messageID: id }
+        }).then((res) => {
+            console.log('res: ', res.data);
+        }).catch((error) => {
+            console.log("error:", error)
+        })
+
+        //Delete the comment from the live socket
+        handleSendMessage(["delete",id])
+        
+
+    }
+
+    const refreshComments = () =>{
+        axios({
+            method: 'GET',
+            url: `https://fishbowl-heroku.herokuapp.com/chat/get/${roomId}`,
+            headers: { "x-auth-token": `${info.token}` }
+        }).then((res) => {
+                setRoomSavedMsgs(res.data[0].Messages);
+        }).catch((err)=>{
+            console.log(err)
+        })
+    }
     
 
     return(
@@ -304,18 +334,20 @@ const ChatRoom = ({route, navigation}) =>{
             </View>
                 <FlatList 
                 data={array}
+                keyboardShouldPersistTaps='always'
                 ListHeaderComponent={header}
                 keyExtractor={(item, index) => {
                     return  index.toString();
                    }}
-                renderItem={({item})=>(
-                    <Swipeable renderRightActions={rightSwipe} renderLeftActions={leftSwipe}>
+                renderItem={({item})=>
+                    room.CreatedByName === info.name?(
+                        <Swipeable renderRightActions={()=>rightSwipe(item.messageID)} renderLeftActions={()=>leftSwipe(item.messageID)}>
                         <View style={styles.replyHolder}>
                             <View style={styles.top}>
                                 <Pressable style={styles.userToClick} onPress={() => redirectToUser(item.sentByID)}>
                                     <Image style={styles.userImage} source={{uri: item.sentByImage}}/>
                                     <Text style={styles.textProfile}>{item.sentByName}</Text>
-                                    <Text style={styles.textDate}>{`· ${current_year === item.date.year ? current_month === item.date.month ? current_day === item.date.day ? current_hour === item.date.hour ? `<1h` : current_hour - item.date.hour + `h` : current_day - item.date.day + `d` : `${saveditem.date.day} ${months[saveditem.date.month].substring(0,3)}` : current_year - item.date.year + `y`}`}</Text>
+                                    <Text style={styles.textDate}>{`· ${current_year === item.date.year ? current_month === item.date.month ? current_day === item.date.day ? current_hour === item.date.hour ? `<1h` : current_hour - item.date.hour + `h` : current_day - item.date.day + `d` : `${item.date.day} ${months[item.date.month].substring(0,3)}` : current_year - item.date.year + `y`}`}</Text>
                                 </Pressable>
                             </View>
                             <View style={styles.middle}>
@@ -325,43 +357,23 @@ const ChatRoom = ({route, navigation}) =>{
                             </View>
                         </View>
                     </Swipeable>
-                )}/>
-                
-                {/* {settingsVisible?<Text>Edit Rooms an</Text>: } */}
-                {/* {messages.slice(0).reverse().map((message, i)=>(
-                    <View style={styles.replyHolder} key={i}>
-                    <View style={styles.top}>
-                        <Pressable style={styles.userToClick} onPress={() => redirectToUser(message.sentByID)}>
-                            <Image style={styles.userImage} source={{uri: message.sentByImage}}/>
-                            <Text style={styles.textProfile}>{message.sentByName}</Text>
-                            <Text style={styles.textDate}>{`· ${current_year === message.date.year ? current_month === message.date.month ? current_day === message.date.day ? current_hour === message.date.hour ? `<1h` : current_hour - message.date.hour + `h` : current_day - message.date.day + `d` : `${savedMessage.date.day} ${months[savedMessage.date.month].substring(0,3)}` : current_year - message.date.year + `y`}`}</Text>
-
-                        </Pressable>
-                    </View>
-                    <View style={styles.middle}>
-                        <Text style={styles.replyText}>{message.text}</Text>
-                    </View>
-                    <View style={styles.bottom}>
-                    </View>
-                </View>
-                ))}
-                {roomSavedMsgs.slice(0).reverse().map((savedMessage, i)=>(
-                    <View style={styles.replyHolder} key={i}>
-                        <View style={styles.top}>
-                            <Pressable style={styles.userToClick} onPress={() => redirectToUser(savedMessage.sentByID)}>
-                                <Image style={styles.userImage} source={{uri: savedMessage.sentByImage}}/>
-                                <Text style={styles.textProfile}>{savedMessage.sentByName}</Text>
-                                <Text style={styles.textDate}>{`· ${current_year === savedMessage.date.year ? current_month === savedMessage.date.month ? current_day === savedMessage.date.day ? current_hour === savedMessage.date.hour ? `<1h` : current_hour - savedMessage.date.hour + `h` : current_day - savedMessage.date.day + `d` : `${savedMessage.date.day} ${months[savedMessage.date.month].substring(0,3)}` : current_year - savedMessage.date.year + `y`}`}</Text>
-                            </Pressable>
+                    ): (
+                        <View style={styles.replyHolder}>
+                            <View style={styles.top}>
+                                <Pressable style={styles.userToClick} onPress={() => redirectToUser(item.sentByID)}>
+                                    <Image style={styles.userImage} source={{uri: item.sentByImage}}/>
+                                    <Text style={styles.textProfile}>{item.sentByName}</Text>
+                                    <Text style={styles.textDate}>{`· ${current_year === item.date.year ? current_month === item.date.month ? current_day === item.date.day ? current_hour === item.date.hour ? `<1h` : current_hour - item.date.hour + `h` : current_day - item.date.day + `d` : `${item.date.day} ${months[item.date.month].substring(0,3)}` : current_year - item.date.year + `y`}`}</Text>
+                                </Pressable>
+                            </View>
+                            <View style={styles.middle}>
+                                <Text style={styles.replyText}>{item.text}</Text>
+                            </View>
+                            <View style={styles.bottom}>
+                            </View>
                         </View>
-                        <View style={styles.middle}>
-                            <Text style={styles.replyText}>{savedMessage.text}</Text>
-                        </View>
-                        <View style={styles.bottom}>
-                        </View>
-                    </View>
-                ))} */}
-                
+                    )
+                }/>
             <View style={styles.chatBar}>
                 <Image style={styles.imageChatbar} source={{uri: info.image}}/>
                 <TextInput style={styles.input} selectionColor={'white'} placeholder={'Message'} value={newMessage} placeholderTextColor="white" onChangeText={message => setNewMessage(message)}/>

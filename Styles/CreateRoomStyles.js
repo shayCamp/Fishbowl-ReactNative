@@ -9,7 +9,7 @@ export default StyleSheet.create({
     header:{
         height: 80,
         width: '100%',
-        // backgroundColor: 'orange',
+        backgroundColor: '#181818',
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'row',
