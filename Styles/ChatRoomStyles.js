@@ -28,6 +28,22 @@ navHeader: {
     paddingBottom: 10,
 },
 
+helpedReply:{
+    height: 25,
+    width: 130,
+    marginRight: 20,
+    borderRadius: 5,
+    backgroundColor:'#0096ff',
+    justifyContent: 'center',
+    alignItems: 'center'
+},
+
+bottom:{
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    paddingBottom: 15
+},
+
 left:{
     minHeight: 65,
     width: '20%',

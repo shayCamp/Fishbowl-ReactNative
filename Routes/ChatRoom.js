@@ -94,20 +94,16 @@ const ChatRoom = ({route, navigation}) =>{
 
 
      const handleSendMessage = (props) => { //Function checks what user says
-
-
-        if(Array.isArray(props)){ //If the message is either delete or helped then they have a seperate meaning
             if(props[0] === "delete"){
-                sendMessage(props)
-                setTimeout(refreshComments, 100);
+                sendMessage([props[0], props[1]]); //Passing message into seperate function from other component
             }
-        }else{
             if (newMessage.length !== 0) { //Validating that new message is not empty
-                const messageID = uuidv4()
+                const messageID = uuidv4();
 
 
                 sendMessage([newMessage, messageID]); //Passing message into seperate function from other component
                 setNewMessage(""); //Clearing new message because it has already been sent
+
 
                 const data = { //Creating an object for the current message sent
                     text: newMessage,
@@ -134,7 +130,7 @@ const ChatRoom = ({route, navigation}) =>{
             }
         }
        
-    }
+    
     /**
      * ===================================
      * Handle message being sent
@@ -148,6 +144,7 @@ const ChatRoom = ({route, navigation}) =>{
      */
 
      const redirectToUser = (props) => {
+
         axios({
             method: "GET",
             url: `https://fishbowl-heroku.herokuapp.com/users/get/${props}`,
@@ -217,6 +214,62 @@ const ChatRoom = ({route, navigation}) =>{
         }
     }
 
+    
+
+
+
+    const leftSwipe = (props) =>{
+        return(
+            <Pressable style={styles.helpedBox} onPress={()=>{markComment(props); handleSendMessage(["delete",props[0]])}}>
+                <Text>{props[1]? `Mark as helped`: `Unmark`}</Text>
+            </Pressable>
+        )
+    }
+
+    const array = [
+        ...messages.slice(0).reverse(),
+        ...roomSavedMsgs.slice(0).reverse()
+    ]
+
+    // const deleteComment = () =>{ 
+        
+    //     //Delete the comment from database whenever clicked
+    //     axios({
+    //         method: 'PUT',
+    //         url: `https://fishbowl-heroku.herokuapp.com/chat/update/${room._id}`,
+    //         headers: { "x-auth-token": `${info.token}` },
+    //         data: { messageID: id }
+    //     }).then((res) => {
+    //         console.log('res: ', res.data);
+    //     }).catch((error) => {
+    //         console.log("error:", error)
+    //     })
+    // }
+
+    const markComment = (propData) =>{ //Marked the comment as helped
+        axios({
+            method: 'PUT',
+            url: `https://fishbowl-heroku.herokuapp.com/chat/update/${roomId}`,
+            headers: { "x-auth-token": `${info.token}` },
+            data: { helped: propData }
+        }).then((res) => {
+            refreshComments()
+        }).catch((error) => {
+            console.log("error:", error)
+        })
+
+    }
+
+    const refreshComments = () =>{ //This updates the stored messages for when user goes into editing mode, does not update live feed
+        axios({
+            method: 'GET',
+            url: `https://fishbowl-heroku.herokuapp.com/chat/get/${roomId}`,
+            headers: { "x-auth-token": `${info.token}` }
+        }).then((res) => {
+                setRoomSavedMsgs(res.data[0].Messages);
+        })
+    }
+
     const header =() =>{
         return(
             <View style={settingsVisible? styles.lowerColumn :styles.lower}>
@@ -248,59 +301,6 @@ const ChatRoom = ({route, navigation}) =>{
         )
     }
 
-
-    const rightSwipe = (id) =>{
-        return(
-            <Pressable style={styles.deleteBox} onPress={()=>deleteComment(id)}>
-                <Text>Delete</Text>
-            </Pressable>
-        )
-    }
-
-    const leftSwipe = (id) =>{
-        return(
-            <Pressable style={styles.helpedBox} >
-                <Text>Mark as helped</Text>
-            </Pressable>
-        )
-    }
-
-    const array = [
-        ...messages.slice(0).reverse(),
-        ...roomSavedMsgs.slice(0).reverse()
-    ]
-
-    const deleteComment = (id) =>{ 
-        
-        //Delete the comment from database whenever clicked
-        axios({
-            method: 'PUT',
-            url: `https://fishbowl-heroku.herokuapp.com/chat/update/${room._id}`,
-            headers: { "x-auth-token": `${info.token}` },
-            data: { messageID: id }
-        }).then((res) => {
-            console.log('res: ', res.data);
-        }).catch((error) => {
-            console.log("error:", error)
-        })
-
-        //Delete the comment from the live socket
-        handleSendMessage(["delete",id])
-        
-
-    }
-
-    const refreshComments = () =>{
-        axios({
-            method: 'GET',
-            url: `https://fishbowl-heroku.herokuapp.com/chat/get/${roomId}`,
-            headers: { "x-auth-token": `${info.token}` }
-        }).then((res) => {
-                setRoomSavedMsgs(res.data[0].Messages);
-        }).catch((err)=>{
-            console.log(err)
-        })
-    }
     
 
     return(
@@ -341,7 +341,7 @@ const ChatRoom = ({route, navigation}) =>{
                    }}
                 renderItem={({item})=>
                     room.CreatedByName === info.name?(
-                        <Swipeable renderRightActions={()=>rightSwipe(item.messageID)} renderLeftActions={()=>leftSwipe(item.messageID)}>
+                        <Swipeable disableRightSwipe={true} renderLeftActions={()=>leftSwipe([item.messageID, !item.helped])}>
                         <View style={styles.replyHolder}>
                             <View style={styles.top}>
                                 <Pressable style={styles.userToClick} onPress={() => redirectToUser(item.sentByID)}>
@@ -354,6 +354,11 @@ const ChatRoom = ({route, navigation}) =>{
                                 <Text style={styles.replyText}>{item.text}</Text>
                             </View>
                             <View style={styles.bottom}>
+                                {item.helped?(
+                                    <View style={styles.helpedReply} >
+                                        <Text style={styles.saveChangesText}>This Reply Helped</Text>
+                                    </View>
+                                ): null}
                             </View>
                         </View>
                     </Swipeable>
@@ -370,6 +375,11 @@ const ChatRoom = ({route, navigation}) =>{
                                 <Text style={styles.replyText}>{item.text}</Text>
                             </View>
                             <View style={styles.bottom}>
+                                {item.helped?(
+                                    <View style={styles.helpedReply} >
+                                        <Text style={styles.saveChangesText}>This Reply Helped</Text>
+                                    </View>
+                                ): null}
                             </View>
                         </View>
                     )
