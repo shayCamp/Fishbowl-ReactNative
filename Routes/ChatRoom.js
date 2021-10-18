@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useRef, useEffect, useContext} from 'react';
 import { StyleSheet, Text, View,Image, FlatList, TextInput, StatusBar, Pressable, ScrollView,} from 'react-native';
 import { useIsFocused } from "@react-navigation/native";
 import styles from '../Styles/ChatRoomStyles'
@@ -7,7 +7,6 @@ import { UserContext } from "../Context/CurrentUser";
 import { Swipeable } from 'react-native-gesture-handler';
 import axios from 'axios';
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
@@ -218,13 +217,13 @@ const ChatRoom = ({route, navigation}) =>{
 
 
 
-    const leftSwipe = (props) =>{
-        return(
-            <Pressable style={styles.helpedBox} onPress={()=>{markComment(props); handleSendMessage(["delete",props[0]])}}>
-                <Text>{props[1]? `Mark as helped`: `Unmark`}</Text>
-            </Pressable>
-        )
-    }
+    // const leftSwipe = (props) =>{
+    //     return(
+    //         <Pressable style={styles.helpedBox} onPress={()=>{markComment(props); handleSendMessage(["delete",props[0]]); ref.close()}}>
+    //             <Text>{props[1]? `Mark as helped`: `Unmark`}</Text>
+    //         </Pressable>
+    //     )
+    // }
 
     const array = [
         ...messages.slice(0).reverse(),
@@ -260,6 +259,22 @@ const ChatRoom = ({route, navigation}) =>{
 
     }
 
+    useEffect(() => {
+        let isMounted = true;
+        axios({
+            method: 'PUT',
+            url: `https://fishbowl-heroku.herokuapp.com/chat/update/${roomId}`,
+            headers: { "x-auth-token": `${info.token}` },
+            data: { Answered: answered }
+        }).then((res) => {
+
+        }).catch((error) => {
+            console.log("error:", error)
+        })
+
+        return () => { isMounted = false };
+    }, [answered])
+
     const refreshComments = () =>{ //This updates the stored messages for when user goes into editing mode, does not update live feed
         axios({
             method: 'GET',
@@ -270,38 +285,9 @@ const ChatRoom = ({route, navigation}) =>{
         })
     }
 
-    const header =() =>{
-        return(
-            <View style={settingsVisible? styles.lowerColumn :styles.lower}>
-                    {settingsVisible? (
-                        <>
-                            <Text style={styles.roomDetails}>Room Details</Text>
-                            <TextInput placeholder={`Change Title: "${room.Title}"`} placeholderTextColor='rgba(255,255,255,0.5)' multiline={true} selectionColor={'rgba(255,255,255,0.3)'} maxLength={300} value={editedTitle} style={styles.inputEdit} onChangeText={(t)=>setEditedTitle(t)}></TextInput>
-                            <TextInput maxLength={1000} placeholder={`Change Question: "${room.Question}"`} placeholderTextColor='rgba(255,255,255,0.5)' multiline={true} selectionColor={'rgba(255,255,255,0.3)'} value={editedQuestion} style={styles.inputEdit} onChangeText={(q)=>setEditedQuestion(q)}></TextInput>
-                            {editedQuestion.length > 0 || editedTitle.length > 0?(
-                                <View style={styles.submitBtnHolder}>
-                                    <Pressable onPress={()=>updateQuestion()} style={styles.submitBtn} >
-                                        <Text style={styles.saveChangesText}>Save Changes</Text>
-                                    </Pressable>
-                                </View>
-                            ):null}
-                        </>
-                    ): (
-                        <>
-                            <View style={styles.left}>
-                                <Image style={styles.image} source={{uri: room.CreatedByImage}}/>
-                            </View>
-                            <View style={styles.right}>
-                                <Text style={styles.Otext}>{room.CreatedByName} - Question:</Text>
-                                <Text style={styles.Qtext}>{roomQuestion}</Text>
-                            </View>
-                        </>
-                    )}
-                </View>
-        )
-    }
+    let rowRefs = new Map();
 
-    
+
 
     return(
         <View style={styles.container}>
@@ -335,13 +321,65 @@ const ChatRoom = ({route, navigation}) =>{
                 <FlatList 
                 data={array}
                 keyboardShouldPersistTaps='always'
-                ListHeaderComponent={header}
+                ListHeaderComponent={
+                    <View style={settingsVisible? styles.lowerColumn :styles.lower}>
+                    {settingsVisible? (
+                        <>
+                            <Text style={styles.roomDetails}>Room Details</Text>
+                            <TextInput placeholder={`Change Title: "${room.Title}"`} placeholderTextColor='rgba(255,255,255,0.5)' multiline={true} selectionColor={'rgba(255,255,255,0.3)'} maxLength={300} value={editedTitle} style={styles.inputEdit} onChangeText={(t)=>setEditedTitle(t)}></TextInput>
+                            <TextInput maxLength={1000} placeholder={`Change Question: "${room.Question}"`} placeholderTextColor='rgba(255,255,255,0.5)' multiline={true} selectionColor={'rgba(255,255,255,0.3)'} value={editedQuestion} style={styles.inputEdit} onChangeText={(q)=>setEditedQuestion(q)}></TextInput>
+                                <View style={styles.submitBtnHolder}>
+                                    <Pressable onPress={()=>setAnswered(!answered)} style={answered ?styles.answeredBtn : styles.answerBtn}>
+                                            <Text style={styles.saveChangesText}>{answered? `Answered`:`Mark As Answered`}</Text>
+                                    </Pressable>
+                                    {editedQuestion.length > 0 || editedTitle.length > 0?(
+                                        <Pressable onPress={()=>updateQuestion()} style={styles.submitBtn} >
+                                            <Text style={styles.saveChangesText}>Update Details</Text>
+                                        </Pressable>
+                                    ):null}
+                                </View>
+                            
+                        </>
+                    ): (
+                        <>
+                            <View style={styles.left}>
+                                <Image style={styles.image} source={{uri: room.CreatedByImage}}/>
+                            </View>
+                            <View style={styles.right}>
+                                <Text style={styles.Otext}>{room.CreatedByName} - Question:</Text>
+                                <Text style={styles.Qtext}>{roomQuestion}</Text>
+                            </View>
+                        </>
+                    )}
+                </View>
+                }
                 keyExtractor={(item, index) => {
                     return  index.toString();
                    }}
                 renderItem={({item})=>
                     room.CreatedByName === info.name?(
-                        <Swipeable disableRightSwipe={true} renderLeftActions={()=>leftSwipe([item.messageID, !item.helped])}>
+                        <Swipeable friction={1} leftThreshold={100} disableRightSwipe={true} renderLeftActions={()=>(
+                            <Pressable style={styles.helpedBox} onPress={()=>{
+                                markComment([item.messageID, !item.helped]); 
+                                handleSendMessage(["delete",item.messageID]); 
+                                [...rowRefs.entries()].forEach(([key, ref]) => {
+                                ref.close();
+                                })}
+                              }>
+                                <Text>{!item.helped? `Mark as helped`: `Unmark`}</Text>
+                            </Pressable>
+                        )} key={item.messageID}
+                        ref={ref => {
+                          if (ref && !rowRefs.get(item.messageID)) {
+                            rowRefs.set(item.messageID, ref);
+                          }
+                        }}
+                        onSwipeableWillOpen={()=>{
+                            [...rowRefs.entries()].forEach(([key, ref]) => {
+                              if (key !== item.messageID && ref) ref.close();
+                            });
+                         }}
+                        >
                         <View style={styles.replyHolder}>
                             <View style={styles.top}>
                                 <Pressable style={styles.userToClick} onPress={() => redirectToUser(item.sentByID)}>

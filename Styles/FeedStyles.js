@@ -26,7 +26,7 @@ export default StyleSheet.create({
         // backgroundColor: '#212529',
         // backgroundColor: 'orange',
         width: '100%',
-        marginBottom: 110,
+        marginBottom: 115,
     },
 
     tagsHolder:{

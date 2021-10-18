@@ -198,6 +198,7 @@ const Search = ({navigation}) => {
       </View>
       <View style={styles.list}>
       <FlatList
+        keyboardShouldPersistTaps='always'
         data={
           allRooms.filter((room)=> {
           return(

@@ -101,14 +101,34 @@ inputEdit:{
 
 submitBtnHolder:{
     marginTop: 20,
-    width: '90%',
+    width: '95%',
     // backgroundColor: 'orange',
-    alignItems: 'flex-end'
+    flexDirection: 'row',
+    justifyContent: 'space-between'
 },
 
 submitBtn:{
     height: 35,
-    width: 110,
+    width: 130,
+    borderRadius: 5,
+    backgroundColor: '#0096ff',
+    alignItems: 'center',
+    justifyContent: 'center'
+},
+
+answerBtn:{
+    height: 35,
+    width: 150,
+    borderRadius: 5,
+    backgroundColor: '#0096ff',
+    alignItems: 'center',
+    opacity: 0.7,
+    justifyContent: 'center'
+},
+
+answeredBtn:{
+    height: 35,
+    width: 150,
     borderRadius: 5,
     backgroundColor: '#0096ff',
     alignItems: 'center',

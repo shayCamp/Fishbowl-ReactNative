@@ -106,7 +106,7 @@ const Profile = ({route, navigation}) => {
        <View style={styles.noRoomContainer}>
        <Pressable onPress={()=> navigation.navigate('Create Room')}>
          <View style={styles.noRoomHolder}>
-           <Text style={styles.createRoomText}>You Have No Rooms - Create Some</Text>
+           <Text style={styles.createRoomText}>{myPage? `You Have No Rooms - Create Some` : `User Has No Rooms`}</Text>
          </View>
        </Pressable>
      </View>

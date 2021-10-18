@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useContext, useRef} from 'react';
 import { StyleSheet, Text, View, FlatList, Image, RefreshControl, Pressable, StatusBar, ScrollView, Modal, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
+import { useScrollToTop } from '@react-navigation/native';
 import styles from '../Styles/FeedStyles'
 import axios from 'axios';
 import { useIsFocused } from "@react-navigation/native";
@@ -15,6 +16,8 @@ import * as Haptics from 'expo-haptics';
 
 
 const Feed = ({route,navigation}) => {
+  const ref = React.useRef(null);
+  useScrollToTop(ref);
   const info = useContext(UserContext)
   let current_date = new Date()
   let current_year = current_date.getFullYear()
@@ -154,6 +157,7 @@ const [longPressedRoom, setLongPressedRoom] = useState([])
       </View>
       <View style={styles.list}>
       <FlatList
+      ref={ref}
         data={
             allRooms.slice().sort(function(a,b){
               if(mostPopular){

@@ -65,8 +65,8 @@ export default StyleSheet.create({
         height: 30,
         width: 110,
         marginLeft: 15,
-        borderRadius: 15,
-        backgroundColor: '#384357',
+        borderRadius: 5,
+        backgroundColor: '#191919',
     },
 
     answeredHolder:{

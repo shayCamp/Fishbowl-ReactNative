@@ -21,7 +21,8 @@ export default StyleSheet.create({
         height: 60,
         width: '100%',
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginBottom: 10
     },
 
     searchHolder:{
@@ -59,7 +60,7 @@ export default StyleSheet.create({
         // backgroundColor: '#212529',
         // backgroundColor: 'orange',
         width: '100%',
-        marginBottom: 60,
+        marginBottom: 75,
     },
 
     followingBtn:{
