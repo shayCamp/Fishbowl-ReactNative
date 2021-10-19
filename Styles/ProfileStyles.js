@@ -14,22 +14,17 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
 
-    createRoomText:{
-        fontSize: 18,
-        color: 'white',
-    },
-
     userImage:{
-        height: 35,
-        width: 35,
+        height: 40,
+        width: 40,
         borderRadius: 5,
-        marginLeft: 15,
-        marginRight: 15
+        marginLeft: 25,
+        marginRight: 20
     },
 
     userUsername:{
         color: 'white',
-        fontSize: 16,
+        fontSize: hp('2.5%'),
         fontWeight: 'bold'
     },
 
@@ -41,16 +36,16 @@ export default StyleSheet.create({
 
     Title: {
         color: 'white',
-        fontSize: 20,
+        fontSize: hp('2.25'),
         marginLeft: 25,
         marginBottom: 15
     },
 
     Question: {
         color: 'white',
-        fontSize: 18,
+        fontSize: hp('2.5'),
         marginLeft: 25,
-        maxWidth: '85%'
+        maxWidth: wp('85%')
     },
 
     tagHolder: {
@@ -62,8 +57,8 @@ export default StyleSheet.create({
     tag:{
         justifyContent: 'center',
         alignItems: 'center',
-        height: 30,
-        width: 110,
+        height: hp('4%'),
+        width: wp('20%'),
         marginLeft: 15,
         borderRadius: 5,
         backgroundColor: '#191919',
@@ -77,18 +72,18 @@ export default StyleSheet.create({
 
     answeredText:{
         color: 'white',
-        fontSize: 16
+        fontSize: hp('2'),
     },
 
     tagName:{
         color: 'white',
-        fontSize: 15
+        fontSize: hp('2'),
     },
 
     block:{
-        height: 30,
+        height: hp('4%'),
         marginRight: 20,
-        width: 100,
+        width: wp('30%'),
         borderRadius: 5,
         alignItems: 'center',
         justifyContent: 'center',
@@ -112,16 +107,9 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
 
-    settingsIcon:{
-        height: 22,
-        width: 22,
-        marginRight: 20,
-        tintColor: 'white'
-    },
-
 
     profileImage:{
-        height: 200,
+        height: hp('25%'),
         width: '100%',
         backgroundColor: '#181818',
         flexDirection: 'column',
@@ -133,17 +121,17 @@ export default StyleSheet.create({
     },
 
     username:{
-        fontSize: 24,
+        fontSize: hp('3'),
         marginTop: 8,
         color:'white',
         fontWeight: 'bold'
     },
 
     email:{
-        fontSize: 16,
+        fontSize: hp('2'),
         color: 'rgba(255,255,255, 0.9)',
         marginTop: 8,
-        maxWidth: '90%'
+        maxWidth: wp('90%')
     },
 
     image:{
@@ -161,8 +149,13 @@ export default StyleSheet.create({
         // backgroundColor: 'orange'
     },
 
+    createRoomText:{
+        color: 'white',
+        fontSize: hp('2.0%'),
+    },
+
     userInfo:{
-        height: 60,
+        height: hp('8%'),
         width: '100%',
         flexDirection: 'row',
         alignItems: 'center'

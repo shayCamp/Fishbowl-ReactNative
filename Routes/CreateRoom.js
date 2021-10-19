@@ -1,10 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
-import React, {useState, useContext} from 'react';
-import { StyleSheet, Text, View,Pressable, Image, TextInput } from 'react-native';
+import React, {useState,useEffect, useContext} from 'react';
+import { StyleSheet,Keyboard, Text, View,Pressable, Image, TextInput } from 'react-native';
 import styles from '../Styles/CreateRoomStyles'
 import { UserContext } from "../Context/CurrentUser";
 import axios from 'axios';
-import { set } from 'react-native-reanimated';
 
 
 
@@ -13,6 +12,22 @@ import { set } from 'react-native-reanimated';
 
 const CreateRoom = ({navigation}) => {
   const info = useContext(UserContext)
+  const [keyboardStatus, setKeyboardStatus] = useState(undefined);
+
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
+      setKeyboardStatus(true);
+    });
+    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+      setKeyboardStatus(false);
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
   
 
     const [title, setTitle] = useState("")
@@ -153,30 +168,32 @@ const CreateRoom = ({navigation}) => {
             <TextInput placeholder={roomExists? "Room Name already exists": "Title - Keep it short and sweet"} placeholderTextColor='rgba(255,255,255,0.5)' multiline={true} selectionColor={'rgba(255,255,255,0.3)'} maxLength={300} value={title} style={styles.input} onChangeText={(t)=>setTitle(t)}></TextInput>
             <TextInput maxLength={1000} placeholder="Question - Get some help lol" placeholderTextColor='rgba(255,255,255,0.5)' multiline={true} selectionColor={'rgba(255,255,255,0.3)'} value={question} style={styles.inputQ} onChangeText={(q)=>setQuestion(q)}></TextInput>
           </View>
-          <View style={styles.boxes}>
-            <View style={styles.boxHolder}>
-                <Pressable style={Math ? styles.tagSelected : styles.tag} onPress={() => setMath(!Math)}><Text style={Math?styles.textSelected:styles.tagText}>Math</Text></Pressable>
-                <Pressable style={English ? styles.tagSelected : styles.tag} onPress={() => setEnglish(!English)}><Text style={English?styles.textSelected:styles.tagText}>English</Text></Pressable>
-                <Pressable style={Geography ? styles.tagSelected : styles.tag} onPress={() => setGeography(!Geography)}><Text style={Geography?styles.textSelected:styles.tagText}>Geography</Text></Pressable>
-                <Pressable style={FM ? styles.tagSelected : styles.tag} onPress={() => setFM(!FM)}><Text style={FM?styles.textSelected :styles.tagText}>FM</Text></Pressable>
-                <Pressable style={CS ? styles.tagSelected : styles.tag} onPress={() => setCS(!CS)}><Text style={CS?styles.textSelected:styles.tagText}>CS</Text></Pressable>
-                <Pressable style={Economics ? styles.tagSelected : styles.tag} onPress={() => setEconomics(!Economics)}><Text style={Economics?styles.textSelected:styles.tagText}>Economics</Text></Pressable>
-                <Pressable style={History ? styles.tagSelected : styles.tag} onPress={() => setHistory(!History)}><Text style={History? styles.textSelected :styles.tagText}>History</Text></Pressable>
-                <Pressable style={Biology ? styles.tagSelected : styles.tag} onPress={() => setBiology(!Biology)}><Text style={Biology?styles.textSelected:styles.tagText}>Biology</Text></Pressable>
-                <Pressable style={Psychology ? styles.tagSelected : styles.tag} onPress={() => setPsychology(!Psychology)}><Text style={Psychology?styles.textSelected:styles.tagText}>Psychology</Text></Pressable>
-                <Pressable style={Physics ? styles.tagSelected : styles.tag} onPress={() => setPhysics(!Physics)}><Text style={Physics?styles.textSelected:styles.tagText}>Physics</Text></Pressable>
-                <Pressable style={Politics ? styles.tagSelected : styles.tag} onPress={() => setPolitics(!Politics)}><Text style={Politics?styles.textSelected:styles.tagText}>Politics</Text></Pressable>
-                <Pressable style={Music ? styles.tagSelected : styles.tag} onPress={() => setMusic(!Music)}><Text style={Music?styles.textSelected:styles.tagText}>Music</Text></Pressable>
-                {/* <Pressable style={RE ? styles.tagSelected : styles.tag} onPress={() => setRE(!RE)}><Text style={RE?styles.textSelected:styles.tagText}>RE</Text></Pressable> */}
-                <Pressable style={chatting ? styles.tagSelected : styles.tag} onPress={() => setChatting(!chatting)}><Text style={chatting? styles.textSelected:styles.tagText}>Chatting</Text></Pressable>
-                <Pressable style={university ? styles.tagSelected : styles.tag} onPress={() => setUniversity(!university)}><Text style={university?styles.textSelected:styles.tagText}>University</Text></Pressable>
-                <Pressable style={alevel ? styles.tagSelected : styles.tag} onPress={() => setALevel(!alevel)}><Text style={alevel?styles.textSelected:styles.tagText}>A-Level</Text></Pressable>
-                <Pressable style={gcse ? styles.tagSelected : styles.tag} onPress={() => setGCSE(!gcse)}><Text style={gcse?styles.textSelected:styles.tagText}>GCSE</Text></Pressable>
-                <Pressable style={football ? styles.tagSelected : styles.tag} onPress={() => setFootball(!football)}><Text style={football? styles.textSelected:styles.tagText}>Football</Text></Pressable>
-                <Pressable style={thoughts ? styles.tagSelected : styles.tag} onPress={() => setThoughts(!thoughts)}><Text style={thoughts?styles.textSelected:styles.tagText}>Thoughts?</Text></Pressable>
-                <Pressable style={sixth ? styles.tagSelected : styles.tag} onPress={() => setSixth(!sixth)}><Text style={sixth?styles.textSelected:styles.tagText}>Sixth_Form</Text></Pressable>
+          {keyboardStatus?null:(
+              <View style={styles.boxes}>
+              <View style={styles.boxHolder}>
+                  <Pressable style={Math ? styles.tagSelected : styles.tag} onPress={() => setMath(!Math)}><Text style={Math?styles.textSelected:styles.tagText}>Math</Text></Pressable>
+                  <Pressable style={English ? styles.tagSelected : styles.tag} onPress={() => setEnglish(!English)}><Text style={English?styles.textSelected:styles.tagText}>English</Text></Pressable>
+                  <Pressable style={Geography ? styles.tagSelected : styles.tag} onPress={() => setGeography(!Geography)}><Text style={Geography?styles.textSelected:styles.tagText}>Geography</Text></Pressable>
+                  <Pressable style={FM ? styles.tagSelected : styles.tag} onPress={() => setFM(!FM)}><Text style={FM?styles.textSelected :styles.tagText}>FM</Text></Pressable>
+                  <Pressable style={CS ? styles.tagSelected : styles.tag} onPress={() => setCS(!CS)}><Text style={CS?styles.textSelected:styles.tagText}>CS</Text></Pressable>
+                  <Pressable style={Economics ? styles.tagSelected : styles.tag} onPress={() => setEconomics(!Economics)}><Text style={Economics?styles.textSelected:styles.tagText}>Economics</Text></Pressable>
+                  <Pressable style={History ? styles.tagSelected : styles.tag} onPress={() => setHistory(!History)}><Text style={History? styles.textSelected :styles.tagText}>History</Text></Pressable>
+                  <Pressable style={Biology ? styles.tagSelected : styles.tag} onPress={() => setBiology(!Biology)}><Text style={Biology?styles.textSelected:styles.tagText}>Biology</Text></Pressable>
+                  <Pressable style={Psychology ? styles.tagSelected : styles.tag} onPress={() => setPsychology(!Psychology)}><Text style={Psychology?styles.textSelected:styles.tagText}>Psychology</Text></Pressable>
+                  <Pressable style={Physics ? styles.tagSelected : styles.tag} onPress={() => setPhysics(!Physics)}><Text style={Physics?styles.textSelected:styles.tagText}>Physics</Text></Pressable>
+                  <Pressable style={Politics ? styles.tagSelected : styles.tag} onPress={() => setPolitics(!Politics)}><Text style={Politics?styles.textSelected:styles.tagText}>Politics</Text></Pressable>
+                  <Pressable style={Music ? styles.tagSelected : styles.tag} onPress={() => setMusic(!Music)}><Text style={Music?styles.textSelected:styles.tagText}>Music</Text></Pressable>
+                  {/* <Pressable style={RE ? styles.tagSelected : styles.tag} onPress={() => setRE(!RE)}><Text style={RE?styles.textSelected:styles.tagText}>RE</Text></Pressable> */}
+                  <Pressable style={chatting ? styles.tagSelected : styles.tag} onPress={() => setChatting(!chatting)}><Text style={chatting? styles.textSelected:styles.tagText}>Chatting</Text></Pressable>
+                  <Pressable style={university ? styles.tagSelected : styles.tag} onPress={() => setUniversity(!university)}><Text style={university?styles.textSelected:styles.tagText}>University</Text></Pressable>
+                  <Pressable style={alevel ? styles.tagSelected : styles.tag} onPress={() => setALevel(!alevel)}><Text style={alevel?styles.textSelected:styles.tagText}>A-Level</Text></Pressable>
+                  <Pressable style={gcse ? styles.tagSelected : styles.tag} onPress={() => setGCSE(!gcse)}><Text style={gcse?styles.textSelected:styles.tagText}>GCSE</Text></Pressable>
+                  <Pressable style={football ? styles.tagSelected : styles.tag} onPress={() => setFootball(!football)}><Text style={football? styles.textSelected:styles.tagText}>Football</Text></Pressable>
+                  <Pressable style={thoughts ? styles.tagSelected : styles.tag} onPress={() => setThoughts(!thoughts)}><Text style={thoughts?styles.textSelected:styles.tagText}>Thoughts?</Text></Pressable>
+                  <Pressable style={sixth ? styles.tagSelected : styles.tag} onPress={() => setSixth(!sixth)}><Text style={sixth?styles.textSelected:styles.tagText}>Sixth_Form</Text></Pressable>
+              </View>
             </View>
-          </View>
+          )}
       </View>
   )
 }

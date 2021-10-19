@@ -40,7 +40,7 @@ const useChat = (roomId) => {
     var currentdate = new Date();
 
     if(messageBody[0] === "delete"){
-      setMessages(messages.filter(message => message.messageID !== messageBody[1]));
+      setMessages([]);
     }else{
       socketRef.current.emit(NEW_CHAT_MESSAGE_EVENT, { //Emitting to the server
         text: messageBody[0],

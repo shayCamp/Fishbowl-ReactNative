@@ -10,11 +10,12 @@ container: {
 
 
 chatBar: {
-    height: 60,
+    height: hp('8.5%'),
     width: '100%',
     alignItems:'center',
     backgroundColor: '#191919',
     flexDirection: 'row',
+    // backgroundColor: 'pink',
     marginTop: 6
 },
 
@@ -29,8 +30,8 @@ navHeader: {
 },
 
 helpedReply:{
-    height: 25,
-    width: 130,
+    height: hp('3.75%'),
+    width: wp('35%'),
     marginRight: 20,
     borderRadius: 5,
     backgroundColor:'#0096ff',
@@ -46,18 +47,18 @@ bottom:{
 
 left:{
     minHeight: 65,
-    width: '20%',
+    width: wp('20%'),
     // backgroundColor: 'orange'
 },
 
 right:{
     minHeight: 65,
-    width: '80%',
+    width: wp('80%'),
     // backgroundColor: 'aqua'
 },
 
 goBack: {
-    width: '15%',
+    width: wp('15%'),
     alignItems:'center',
     // backgroundColor: 'red',
     height: 40,
@@ -65,12 +66,13 @@ goBack: {
 },
 
 edit: {
-    width: '15%',
+    width: wp('15%'),
     alignItems:'center',
     // backgroundColor: 'red',
     height: 40,
     justifyContent: 'center'
 },
+
 sendBtn:{
  width: wp('12%'),
  height: hp('5%'),
@@ -80,8 +82,7 @@ sendBtn:{
 },
 
 imgntxt:{
-    width: '70%',
-    // backgroundColor: 'orange',
+    width: wp('70%'),
     flexDirection: 'row',
     alignItems:'center',
     justifyContent:'center',
@@ -90,9 +91,9 @@ imgntxt:{
 
 inputEdit:{
     minHeight: 50,
-    fontSize: 16,
+    fontSize: hp('2.2%'),
     fontWeight: 'bold',
-    width: '95%',
+    width: wp('90%'),
     borderBottomWidth: 1,
     color: 'white',
     marginTop: 15,
@@ -101,15 +102,15 @@ inputEdit:{
 
 submitBtnHolder:{
     marginTop: 20,
-    width: '95%',
+    width: wp('90%'),
     // backgroundColor: 'orange',
     flexDirection: 'row',
     justifyContent: 'space-between'
 },
 
 submitBtn:{
-    height: 35,
-    width: 130,
+    height: hp('4%'),
+    width: wp('35%'),
     borderRadius: 5,
     backgroundColor: '#0096ff',
     alignItems: 'center',
@@ -117,8 +118,8 @@ submitBtn:{
 },
 
 answerBtn:{
-    height: 35,
-    width: 150,
+    height: hp('4%'),
+    width: wp('35%'),
     borderRadius: 5,
     backgroundColor: '#0096ff',
     alignItems: 'center',
@@ -127,8 +128,8 @@ answerBtn:{
 },
 
 answeredBtn:{
-    height: 35,
-    width: 150,
+    height: hp('4%'),
+    width: wp('35%'),
     borderRadius: 5,
     backgroundColor: '#0096ff',
     alignItems: 'center',
@@ -140,7 +141,7 @@ saveChangesText:{
 },
 
 roomDetails:{
-    fontSize: 18,
+    fontSize: hp('2.45%'),
     color: 'white',
     opacity: 0.5
 },
@@ -164,10 +165,11 @@ lowerColumn:{
     paddingTop: 20,
     flexDirection: 'column',
     alignItems: 'center',
-    // justifyContent: 'center',
+    justifyContent: 'space-evenly',
     paddingBottom: 20,
     paddingLeft: 15,
     paddingRight: 15,
+    minHeight: hp('35%'),
     width: '100%',
     backgroundColor: '#181818',
     borderBottomWidth: 1,
@@ -177,15 +179,15 @@ lowerColumn:{
 Qtext:{
     marginLeft: 10,
     color: 'white',
-    fontSize: 18,
+    fontSize: hp('2.45%'),
     maxWidth: '85%',
 },
 
 Otext:{
     marginLeft: 10,
     color: 'white',
-    fontSize: 16,
-    opacity: 0.5,
+    fontSize: hp('2.25%'),
+    opacity: 0.8,
     maxWidth: '85%',
 },
 
@@ -200,8 +202,8 @@ image:{
 },
 
 settingsIcon:{
-    height: 20,
-    width: 20,
+    height: 21,
+    width: 21,
     marginRight: 20,
     tintColor: 'white'
 },
@@ -217,27 +219,26 @@ imageChatbar:{
 
 text:{
     color: 'white',
-    fontSize: 18,
+    fontSize: hp('2.25%'),
     // backgroundColor: 'red',
-    maxWidth: '65%'
+    maxWidth: wp('65%')
 },
 
 
 
 
 input:{
-    height: '100%',
+    // height: '100%',
     width: wp('62%'),
     // marginRight: 20,
     color: 'white',
-    fontSize: 18,
+    fontSize: hp('2.25%'),
     // backgroundColor: 'red'
 },
 
 
-
 replyHolder:{
-    minHeight: 80,
+    minHeight: hp('15%'),
     width: '100%',
     marginTop: 10,
     paddingTop: 10,
@@ -246,24 +247,18 @@ replyHolder:{
     borderColor: 'rgba(0,0,0,0.5)',
 },
 
-deleteBox:{
-    width: 100,
-    marginTop: 10,
-    backgroundColor: '#fd4d4d',
-    alignItems: 'center',
-    justifyContent: 'center'
-},
-
 helpedBox:{
-    width: 140,
+    width: wp('35%'),
     marginTop: 10,
     backgroundColor: '#0096ff',
     alignItems: 'center',
     justifyContent: 'center'
 },
 
+
+
 top:{
-    height: 55,
+    height: hp('7%'),
     width: '100%',
     // backgroundColor: 'yellow',
     flexDirection: 'row',
@@ -273,7 +268,7 @@ top:{
 userToClick:{
     height: '100%',
     // backgroundColor: 'red',
-    minWidth: '60%',
+    minWidth: wp('60%'),
     flexDirection: 'row',
     alignItems: 'center',
     marginLeft: 15,
@@ -281,7 +276,7 @@ userToClick:{
 },
 
 middle:{
-    minHeight: 50,
+    minHeight: hp('7%'),
     // alignItems: 'center',
     // backgroundColor: 'red',
     paddingLeft: 20,
@@ -294,7 +289,7 @@ middle:{
 
 replyText:{
     color: 'white',
-    fontSize: 18,
+    fontSize: hp('2.5%'),
     // backgroundColor: 'red',
 },
 
@@ -307,14 +302,14 @@ userImage:{
 
 textProfile:{
     color: 'white',
-    fontSize: 18,
+    fontSize: hp('2.35%'),
     marginRight: 15
     // backgroundColor: 'red',
 },
 
 textDate:{
     color: 'white',
-    fontSize: 16,
+    fontSize: hp('2.2%'),
     // backgroundColor: 'red',
 },
 

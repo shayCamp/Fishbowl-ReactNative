@@ -1,4 +1,6 @@
 import {StyleSheet} from 'react-native'
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+
 
 export default StyleSheet.create({
     container: {
@@ -7,7 +9,7 @@ export default StyleSheet.create({
     },
 
     header:{
-        height: 80,
+        height: hp('10%'),
         width: '100%',
         backgroundColor: '#181818',
         alignItems: 'center',
@@ -18,7 +20,8 @@ export default StyleSheet.create({
     },
 
     userHolder:{
-        height: 60,
+        height: hp('10%'),
+        // backgroundColor: 'pink',
         width: '100%',
         flexDirection: 'row',
         alignItems: 'center',
@@ -26,8 +29,8 @@ export default StyleSheet.create({
     },
 
     searchHolder:{
-        height: 42,
-        width: '85%',
+        height: hp('5%'),
+        width: wp('85%'),
         // backgroundColor: '#181818',
         borderRadius: 10,
         alignItems: 'center',
@@ -45,8 +48,8 @@ export default StyleSheet.create({
     
 
     followBtn:{
-        height: 35,
-        width: 90,
+        height: hp('4.5%'),
+        width: wp('25%'),
         borderWidth: 1,
         borderColor: 'white',
         marginLeft: 'auto',
@@ -64,8 +67,8 @@ export default StyleSheet.create({
     },
 
     followingBtn:{
-        height: 35,
-        width: 90,
+        height: hp('4.5%'),
+        width: wp('25%'),
         borderWidth: 1,
         borderColor: 'white',
         marginLeft: 'auto',
@@ -78,21 +81,21 @@ export default StyleSheet.create({
 
     followingTxt:{
         color: 'white',
-        fontSize: 16,
+        fontSize: hp('2%'),
         fontWeight: '700'
     },
 
     userImage:{
-        height: 45,
-        width: 45,
-        borderRadius: 22.5,
+        height: 50,
+        width: 50,
+        borderRadius: 25,
         marginLeft: 25,
         marginRight: 20
     },
 
     userTxt:{
         color: 'white',
-        fontSize: 16,
+        fontSize: hp('2.25%'),
     },
 
     input:{

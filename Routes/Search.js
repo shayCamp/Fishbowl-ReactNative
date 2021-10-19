@@ -20,6 +20,7 @@ const Search = ({navigation}) => {
   const isFocused = useIsFocused();
   const [following, setFollowing] = useState([]) //Array of the users the current user is following
   const [users,setUsers] = useState([])
+
   // console.log('users: ', users);
   const [searchFilter, setSearchFilter] = useState('')
   let current_date = new Date()
@@ -32,6 +33,7 @@ const Search = ({navigation}) => {
   let months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 
 
+  
 
 
   useEffect(()=>{ //On page load grab all the rooms
@@ -228,10 +230,13 @@ const Search = ({navigation}) => {
             <View style={feedStyles.top}>
               <View style={feedStyles.left}>
                 <Image style={feedStyles.image} source={{uri: item.CreatedByImage}}/>
+                <Text style={feedStyles.username}>{item.CreatedByName}</Text>
               </View>
               <View style={feedStyles.right}>
-                <Text style={feedStyles.Title}>{item.Title.split(' ').slice(0,3).join(' ')}<Text style={feedStyles.date}> {`· ${current_year === item.Date.year ? current_month === item.Date.month ? current_day === item.Date.day ? current_hour === item.Date.hour ? `<1h` : current_hour - item.Date.hour + `h` : current_day - item.Date.day + `d` : current_month - item.Date.month + `m` : current_year - item.Date.year + `y`}`}</Text></Text>
-                <Text style={feedStyles.username}>/{item.CreatedByName}</Text>
+                <Text style={feedStyles.Title}>{item.Title.split(' ').slice(0,3).join(' ')}<Text style={feedStyles.date}> {`· ${current_year === item.Date.year ? current_month === item.Date.month ? current_day === item.Date.day ? current_hour === item.Date.hour ? `<1h` : current_hour - item.Date.hour + `h` : current_day - item.Date.day + `d` : `${item.Date.day} ${months[item.Date.month].substring(0,3)}`: current_year - item.Date.year + `y`}`}</Text></Text>
+                {item.Tags.length !== 0?(
+                  <Text style={feedStyles.Tag}>{item.Tags.length!==0? item.Tags.map((tag)=> (tag + ` · ` )):null}</Text>
+                ):null}
                 <Text style={feedStyles.Question}>{item.Question}</Text>
               </View>
             </View>
@@ -242,12 +247,6 @@ const Search = ({navigation}) => {
                 </View>
               </View>
             ):null}
-            {/* <Text style={feedStyles.border}ellipsizeMode="clip" numberOfLines={1}>
-              - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-              - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-              - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-              - - - - - - - - - - - - - - - - -
-            </Text> */}
           </Pressable>
         )}
       />

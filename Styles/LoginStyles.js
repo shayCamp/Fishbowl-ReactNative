@@ -4,67 +4,148 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 export default StyleSheet.create({
 
 container: {
-    flex: 1,
+    height: hp('100%')
 },
 
+//Login Page
+
 svg: {
-    height: hp('50%'),
+    height: hp('40%'),
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
     // backgroundColor: 'red'
 },
+
 desc: {
-    height: '36%',
+    height: hp('32%'),
     width: '100%',
     alignItems: 'center',
     justifyContent: 'space-evenly',
     // backgroundColor: 'orange'
 },
+
+loginWithG:{
+    height: hp('15%'),
+    alignItems: 'center',
+    justifyContent: 'center',
+    // backgroundColor: 'pink'
+},
+
+
 loginHolder: {
-    height: '14%',
+    height: hp('10%'),
+    width: '100%',
+    alignItems: 'flex-end',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    // backgroundColor: 'teal',
+},
+
+//Login Page
+
+//Signup Page
+
+nav:{
+    height: hp('12%'),
+    width: '100%',
+    // backgroundColor: 'orange',
+    // alignItems: 'center',
+    justifyContent: 'center',
+},
+
+
+svg2: {
+    height: hp('20%'),
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-    // backgroundColor: 'teal'
+    // backgroundColor: 'red'
 },
 
-loginBtn: {
-    height: 70,
-    width: '85%',
+desc2: {
+    height: hp('30%'),
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+    // backgroundColor: 'orange'
+},
+
+//Signup Page
+
+
+
+
+
+back:{
+    height: hp('7%'),
+    width: wp('7%'),
+    tintColor: 'white',
+    marginLeft: 20
+},
+
+submit: {
+    height: hp('8%'),
+    width: wp('85%'),
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
     borderRadius: 10,
-    backgroundColor: '#0096ff'
+    backgroundColor: '#0096ff',
+    overflow: 'hidden'
 },
+
+
+createUser:{
+    flex: 1
+},
+
+
+SigninInactive:{
+    justifyContent: 'center',
+    alignItems: 'center',
+    // backgroundColor: 'orange',
+    height: 30,
+},
+
 
 input:{
-    height: '80%',
-    width: '60%',
+    height: hp('8%'),
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: 'rgba(255,255,255,0.5)',
+    width: wp('85%'),
+    textAlign: 'center',
     // backgroundColor: 'red',
     color: 'white',
-    marginRight: 20,
-    fontSize: 18,
+    fontSize: hp('2.5%'),
 },
 
-text: {
-    fontSize: 22,
-    color: 'white'
-},
 Large: {
     textAlign: 'center',
-    fontSize: 35,
+    fontSize: hp('4.5%'),
     color: 'white',
-    marginBottom: 20,
     maxWidth: '80%'
 },
 Small: {
     textAlign: 'center',
-    fontSize: 22,
+    fontSize: hp('2.5%'),
     color: 'white',
     maxWidth: '85%',
     opacity: 0.6
+},
+SmallT: {
+    textAlign: 'center',
+    fontSize: hp('2.5%'),
+    color: 'white',
+    opacity: 0.6
+},
+
+SmallActive: {
+    textAlign: 'center',
+    fontSize: hp('2.5%'),
+    color: 'white',
+    maxWidth: '85%',
 },
 
 });

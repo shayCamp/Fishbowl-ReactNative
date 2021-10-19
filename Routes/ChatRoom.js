@@ -65,6 +65,7 @@ const ChatRoom = ({route, navigation}) =>{
      */
      const {roomId} = route.params
     const { messages, sendMessage } = useChat(roomId); //Passing in the room ID into my useChat function which is within another component
+    console.log('messages: ', messages);
     const [newMessage, setNewMessage] = useState('') //This stores a message that has currently been typed by a user and submitted
     const [roomSavedMsgs, setRoomSavedMsgs] = useState([])
 
@@ -286,6 +287,10 @@ const ChatRoom = ({route, navigation}) =>{
     }
 
     let rowRefs = new Map();
+
+    useEffect(()=>{
+        messages.length === 0? refreshComments: null
+    },[messages])
 
 
 

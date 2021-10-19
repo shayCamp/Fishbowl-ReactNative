@@ -7,7 +7,7 @@ export default StyleSheet.create({
     },
 
     header:{
-        height: 80,
+        height: hp('10%'),
         width: '100%',
         backgroundColor: '#181818',
         alignItems: 'center',
@@ -18,15 +18,15 @@ export default StyleSheet.create({
     },
 
     goBack: {
-        width: '15%',
+        width: wp('15%'),
         alignItems:'center',
         // backgroundColor: 'red',
-        height: 40,
+        height: 45,
         justifyContent: 'center'
     },
 
     Title:{
-        width: '70%',
+        width: wp('70%'),
         // backgroundColor: 'orange',
         flexDirection: 'row',
         alignItems:'center',
@@ -44,20 +44,20 @@ export default StyleSheet.create({
 
     text:{
         color: 'white',
-        fontSize: 18,
+        fontSize: hp('2.25%'),
         // backgroundColor: 'red',
     },
 
     postText:{
         color: 'white',
-        fontSize: 18,
+        fontSize: hp('2.25%'),
         opacity: 0.8
         // backgroundColor: 'red',
     },
 
     input:{
-        minHeight: 50,
-        fontSize: 16,
+        minHeight: hp('7%'),
+        fontSize: hp('2%'),
         fontWeight: 'bold',
         width: '90%',
         borderBottomWidth: 1,
@@ -75,10 +75,10 @@ export default StyleSheet.create({
     },
 
     tag:{
-        height: 32,
-        padding: 12,
-        borderRadius: 50,
-        backgroundColor: '#111213ff',
+        height: hp('5%'),
+        padding: 8,
+        borderRadius: 10,
+        backgroundColor: '#181818',
         alignItems:'center',
         justifyContent: 'center',
         marginTop: 5,
@@ -99,20 +99,22 @@ export default StyleSheet.create({
     },
 
     tagSelected:{
-        height: 32,
-        padding: 12,
-        borderRadius: 50,
-        backgroundColor: "#0096ff",
+        height: hp('5%'),
+        padding: 8,
+        borderRadius: 10,
+        backgroundColor: '#0096ff',
         alignItems:'center',
         justifyContent: 'center',
         marginTop: 5,
         marginRight: 5,
         marginBottom: 10,
-        marginLeft: 10
+        marginLeft: 10,
+        minWidth: 40
     },
 
+
     boxHolder:{
-        width: '95%',
+        width: wp('95%'),
         flex:1,
         flexDirection: 'row',
         flexWrap: 'wrap',
@@ -122,8 +124,8 @@ export default StyleSheet.create({
     },
 
     inputQ:{
-        minHeight: 50,
-        fontSize: 16,
+        minHeight: hp('6%'),
+        fontSize: hp('2%'),
         fontWeight: 'bold',
         width: '90%',
         color: 'white',
@@ -131,10 +133,10 @@ export default StyleSheet.create({
     },
 
     spacing: {
-        width: '15%',
+        width: wp('15%'),
         alignItems:'center',
         // backgroundColor: 'red',
-        height: 40,
+        height: 45,
         justifyContent: 'center'
     },
 })

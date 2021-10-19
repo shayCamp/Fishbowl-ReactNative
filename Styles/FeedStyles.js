@@ -20,7 +20,20 @@ export default StyleSheet.create({
         zIndex: 400
     },
 
-
+    appTitle:{
+        color: 'white',
+        fontSize: hp('2.3%'),
+        opacity: 0.8,
+        marginLeft: 20,
+        marginBottom: 10,
+    },
+        
+    appFeedT:{
+        color: 'white',
+        fontSize: hp('3%'),
+        fontWeight: 'bold',
+        marginLeft: 20
+    },
 
     list:{
         // backgroundColor: '#212529',
@@ -42,8 +55,6 @@ export default StyleSheet.create({
         backgroundColor: '#111213ff'
     },
 
-    
-
     filterIcon:{
         height: 20,
         width: 20,
@@ -59,14 +70,14 @@ export default StyleSheet.create({
     },
 
     filterText:{
-        fontSize: 17,
+        fontSize: hp('2.1%'),
         color: 'white',
         opacity: 0.8,
         marginRight: 15
     },
 
     filterOptionText:{
-        fontSize: 18,
+        fontSize: hp('2.2%'),
         color: 'white'
     },
 
@@ -92,69 +103,38 @@ export default StyleSheet.create({
     },
 
     date: {
-        fontSize: 15,
+        fontSize: hp('2.25%'),
     },
-    modalDate: {
-        fontSize: 14,
-    },
-
-    appTitle:{
-        color: 'white',
-        fontSize: 17,
-        opacity: 0.8,
-        marginLeft: 20,
-        marginBottom: 10,
-    },
-
-    appFeedT:{
-        color: 'white',
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginLeft: 20
-    },
-
 
     Title: {
-        color: 'rgba(255,255,255, 0.5)',
-        fontSize: 18,
+        color: 'rgba(255,255,255, 1)',
+        fontSize: hp('2.5%'),
+        maxWidth: wp('60%'),
+        fontWeight: 'normal',
         // marginLeft: 25,
-        marginBottom: 4
+        marginBottom: 10,
+        // backgroundColor: 'yellow'
     },
 
-    modalTitle: {
-        color: 'rgba(255,255,255, 0.5)',
-        fontSize: 16,
-        // marginLeft: 25,
-        marginBottom: 4
+    Tag:{
+        fontSize: hp('2%'),
+        maxWidth: wp('60%'),
+        color: 'rgba(255,255,255, 0.9)',
+        marginBottom: 5,
     },
 
     Question: {
         color: 'white',
-        fontSize: 20,
+        fontSize: hp('2.75%'),
         // marginLeft: 25,
-        maxWidth: '85%',
-    },
-
-    modalQuestion: {
-        color: 'white',
-        fontSize: 20,
-        // marginLeft: 25,
-        maxWidth: '85%'
-    },
-
-    userInfo:{
-        height: 60,
-        width: '100%',
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginBottom: 10
-        // borderBottomWidth: 1,
-        // borderColor: 'rgba(255,255,255, 0.2)'
+        maxWidth: wp('60%'),
+        fontWeight: 'bold',
+        lineHeight: 35
     },
 
     sortTxt:{
         marginTop: 16,
-        fontSize: 16,
+        fontSize: hp('2%'),
         color: 'white',
         height: 35,
         borderBottomWidth: 1,
@@ -162,19 +142,18 @@ export default StyleSheet.create({
         width: '90%'
     },
 
-    
     optionContainer:{
         marginTop:15,
         // backgroundColor: 'pink',
         width: '100%',
-        height: 40,
+        height: hp('5%'),
         alignItems: 'center',
         flexDirection: 'row',
-        width: '90%'
+        width: wp('90%')
     },
 
     modalContainer:{
-        height: '40%',
+        height: hp('40%'),
         backgroundColor: '#212121',
         flexDirection: 'column',
         alignItems: 'center',
@@ -184,15 +163,13 @@ export default StyleSheet.create({
     },
 
     username:{
-        color: 'rgba(255,255,255, 0.5)',
-        fontSize: 15,
-        fontWeight: 'bold'
-    },
-
-    modalUsername:{
-        color: 'rgba(255,255,255, 0.5)',
-        fontSize: 14,
-        fontWeight: 'bold'
+        color: 'rgba(255,255,255, 0.8)',
+        fontSize: hp('2%'),
+        fontWeight: 'bold',
+        textAlign: 'center',
+        // backgroundColor:'orange',
+        width: 90,
+        marginBottom: 10
     },
 
     filter:{
@@ -200,20 +177,14 @@ export default StyleSheet.create({
         backgroundColor: '#171717',
     },
 
-
     image:{
         height: 90,
         width: 90,
+        marginBottom: 10,
         borderRadius: 14,
     },
 
-
-    roomInfo:{
-        paddingBottom: 25,
-        paddingTop: 15,
-        width: '100%',
-        // backgroundColor: 'teal',
-    },
+    
 
     room:{
         width: '100%',
@@ -235,14 +206,15 @@ export default StyleSheet.create({
     },
 
     left: {
+        // backgroundColor: 'red',
+
         minHeight: 90,
-        width: '30%',
-        // backgroundColor: 'aqua',
+        width: wp('30%'),
     },
 
     right:{
         minHeight: 90,
-        width: '70%',
+        width: wp('70%'),
         // backgroundColor: 'pink'
     },
 
@@ -254,13 +226,13 @@ export default StyleSheet.create({
     footer: {
         alignItems: 'center',
         justifyContent: 'center',
-        height: 60,
+        height: hp('7%'),
         width: '100%',
         // marginBottom: 10
     },
 
     noRooms: {
-        fontSize: 18,
+        fontSize: hp('2.2%'),
         color: 'white'
     },
 
@@ -274,12 +246,12 @@ export default StyleSheet.create({
 
     tagText:{
         color: 'white',
-        fontSize: 16,
+        fontSize: hp('2%'),
         opacity: 0.8
     },
 
     tag:{
-        height: 32,
+        height: hp('4%'),
         padding: 12,
         borderRadius: 5,
         backgroundColor: '#111213ff',
@@ -288,7 +260,7 @@ export default StyleSheet.create({
         marginTop: 5,
         marginRight: 5,
         marginBottom: 10,
-        minWidth: 40
+        minWidth: wp('5%')
     },
 
     answeredHolder:{
@@ -308,37 +280,9 @@ export default StyleSheet.create({
         backgroundColor: '#0096ff'
     },
 
-    text:{
-        color: 'white',
-        fontSize: 22
-    },
     answeredText:{
         color: 'white',
-        fontSize: 16
-    },
-
-    tagName:{
-        color: 'white',
-        fontSize: 15
-    },
-     
-    roomModalView:{
-        backgroundColor: 'rgba(0,0,0,0.2)',
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-     
-    roomModalContainer:{
-        minHeight: '15%',
-        width: '90%',
-        backgroundColor: '#212121',
-        borderRadius: 10,
-        paddingTop: 15,
-        paddingBottom: 15,
-        paddingLeft: 20,
-        paddingRight: 20
-
+        fontSize: hp('2.1%')
     },
 
     bar:{
@@ -356,41 +300,4 @@ export default StyleSheet.create({
         opacity: 0.6,
         backgroundColor: 'white'
     },
-
-    headerForModal:{
-        flexDirection: 'row',
-        justifyContent:'space-between'
-    },
-
-    headerLeft:{
-        // width: '25%',
-        minHeight: 40,
-        // backgroundColor: 'aqua',
-        alignItems: 'center',
-        justifyContent: 'flex-start'
-    },
-
-    longPressedImage:{
-        height: 65,
-        width: 65,
-        borderRadius: 10,
-    },
-
-    headerRight:{
-        width: '72%',
-        minHeight: 40,
-        // backgroundColor: 'orange'
-    },
-
-    
-    modalRoomStats:{
-        paddingTop: 10,
-        paddingBottom: 10,
-    },
-
-    statsList:{
-        fontSize: 16,
-        marginTop: 10,
-        color: 'white',
-    }
 })

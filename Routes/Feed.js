@@ -179,22 +179,21 @@ const [longPressedRoom, setLongPressedRoom] = useState([])
           />
         }
         renderItem={({item})=> (
-          <Pressable style={styles.room} onPress={()=> navigation.navigate('ChatRoom', {roomId: item._id})} onLongPress={()=> {
-            setLongPressedRoom(item)
-            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.light);
-            setRoomModalVisible(true)
-          }}>
+          <Pressable style={styles.room} onPress={()=> navigation.navigate('ChatRoom', {roomId: item._id})}>
             <View style={styles.top}>
               <View style={styles.left}>
                 <Image style={styles.image} source={{uri: item.CreatedByImage}}/>
+                <Text style={styles.username}>{item.CreatedByName}</Text>
               </View>
               <View style={styles.right}>
                 <Text style={styles.Title}>{item.Title.split(' ').slice(0,3).join(' ')}<Text style={styles.date}> {`· ${current_year === item.Date.year ? current_month === item.Date.month ? current_day === item.Date.day ? current_hour === item.Date.hour ? `<1h` : current_hour - item.Date.hour + `h` : current_day - item.Date.day + `d` : `${item.Date.day} ${months[item.Date.month].substring(0,3)}`: current_year - item.Date.year + `y`}`}</Text></Text>
-                <Text style={styles.username}>/{item.CreatedByName}</Text>
+                {item.Tags.length !== 0?(
+                  <Text style={styles.Tag}>{item.Tags.length!==0? item.Tags.map((tag)=> (tag + ` · ` )):null}</Text>
+                ):null}
                 <Text style={styles.Question}>{item.Question}</Text>
               </View>
             </View>
-            {item.Tags.length !== 0?(
+            {/* {item.Tags.length !== 0?(
               <View style={styles.tagsHolder}>
                 {item.Tags.map((tag, i)=>(
                   <View key={i} style={styles.tag}>
@@ -202,7 +201,7 @@ const [longPressedRoom, setLongPressedRoom] = useState([])
                   </View>
                 ))}
               </View>
-            ): null}
+            ): null} */}
             {item.Answered?(
               <View style={styles.answeredHolder}>
                 <View style={styles.block}>
@@ -225,7 +224,7 @@ const [longPressedRoom, setLongPressedRoom] = useState([])
         <TouchableOpacity 
             style={styles.modalView} 
             activeOpacity={1} 
-            onPress={()=>setModalVisible(false)}
+            onPress={()=>setModalVisible(!modalVisible)}
           >
             <TouchableWithoutFeedback>
                 <View style={styles.modalContainer}>
@@ -264,43 +263,6 @@ const [longPressedRoom, setLongPressedRoom] = useState([])
               </TouchableWithoutFeedback>
           </TouchableOpacity>  
       </Modal>
-      {longPressedRoom.length === 0? (null): (
-        <Modal
-        animationType="fade"
-        transparent={true}
-        visible={roomModalVisible}
-        onRequestClose={() => {
-          setRoomModalVisible(!roomModalVisible);
-        }}
-      >
-        <TouchableOpacity 
-            style={styles.roomModalView} 
-            activeOpacity={1} 
-            onPress={()=>setRoomModalVisible(false)}
-          >
-              <TouchableWithoutFeedback>
-                <View style={styles.roomModalContainer}>
-                  <View style={styles.headerForModal}>
-                    <View style={styles.headerLeft}>
-                      <Image style={styles.longPressedImage} source={{uri: longPressedRoom.CreatedByImage}}/>
-                    </View>
-                    <View style={styles.headerRight}>
-                          <Text style={styles.modalTitle}>{longPressedRoom.Title.split(' ').slice(0,3).join(' ')}<Text style={styles.modalDate}> {`· ${current_year === longPressedRoom.Date.year ? current_month === longPressedRoom.Date.month ? current_day === longPressedRoom.Date.day ? current_hour === longPressedRoom.Date.hour ? `<1h` : current_hour - longPressedRoom.Date.hour + `h` : current_day - longPressedRoom.Date.day + `d` : `${longPressedRoom.Date.day} ${months[longPressedRoom.Date.month].substring(0,3)}`: current_year - longPressedRoom.Date.year + `y`}`}</Text></Text>
-                      <Text style={styles.modalUsername}>/{longPressedRoom.CreatedByName}</Text>
-                      <Text style={styles.modalQuestion}>{longPressedRoom.Question}</Text>
-                    </View>
-                  </View>
-                  <View style={styles.modalRoomStats}>
-                    <Text style={styles.statsList}>Total Messages: {longPressedRoom.Messages.length}</Text>
-                    <Text style={styles.statsList}>Answered: {longPressedRoom.Answered? `True`: `False`}</Text>
-                    <Text style={styles.statsList}>Creation Date: {longPressedRoom.Date.day}th {months[longPressedRoom.Date.month]} {longPressedRoom.Date.year}</Text>
-                  </View>
-                </View>
-              </TouchableWithoutFeedback>
-          </TouchableOpacity>  
-      </Modal>
-      )}
-      
     </View>
   )
 }
