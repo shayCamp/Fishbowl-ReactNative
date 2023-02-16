@@ -28,9 +28,6 @@ I also created other channels to monitor which users were online currently on th
 ### Frontend
 
 
-### Backend
-
-
 
 
 
