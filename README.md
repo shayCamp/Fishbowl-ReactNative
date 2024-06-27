@@ -24,9 +24,6 @@ A user would be able to intialise channels on the server with unique ID's, this 
 
 I also created other channels to monitor which users were online currently on the app, and displayed their status so other users could see this. There's similiar implementation for the following and upvoting system, which both use sockets.
 
-# How to run application<br/>
-### Frontend
-
 
 
 
