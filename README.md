@@ -1,33 +1,26 @@
-# Fishbowl Mobile App
-This was my A-Level Computing project & also my first non "hello world" project. The intention of this project was to provide a platform for students to communicate easily and help other students with questions, which will in turn aid their own understanding. This was done by allowing students to create their own personal chat rooms with topic of their choice, these rooms could be joined by anyone interested, and live conversations could occur.
 
-# Technologies Used
-### Frontend
+# 📱 Fishbowl Mobile App
+
+The **Fishbowl Mobile App** was my first major project beyond basic apps. Built for my A-Level Computing course, it serves as a platform where students can connect in real-time and create chat rooms on specific topics. Other students can join these rooms to ask questions or share knowledge, aiding both the asker and those offering help.
+
+## 🛠️ Technologies Used
+
+### 🎨 Frontend
 1. React Native
-3. SocketIo Client
+2. Socket.IO Client
 
-### Backend
-1. NodeJs
+### 🔧 Backend
+1. Node.js
 2. Express
-3. SocketIo Server
+3. Socket.IO Server
 
+## 🌟 Features Implemented
 
-
-# Features Implemented
-1. Live chats
+1. Live Chats
 2. Following System
-3. Live user status
-4. Chat room creation
+3. Real-Time User Status
+4. Custom Chat Room Creation
 
-# How it works
-A user would be able to intialise channels on the server with unique ID's, this would represent a new room created, other users would be able to join these rooms which would subscribe them to the respective channel. So when a user sends a message, the message is emitted to everyone on that channel only, meaning the message stays in that room. Once the user exits the chat room then they unsubscribe from the channel. 
+## 🚀 How It Works
 
-I also created other channels to monitor which users were online currently on the app, and displayed their status so other users could see this. There's similiar implementation for the following and upvoting system, which both use sockets.
-
-
-
-
-
-
-
-
+Users can create channels with unique IDs that represent new chat rooms, and others can join, subscribing to the room’s channel. Messages sent in the room are shared only with members, creating focused discussions. Users are unsubscribed from a room when they leave, while real-time status updates show who’s online. Following and upvoting are also managed through sockets, enhancing the social experience.
